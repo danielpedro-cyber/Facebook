@@ -1,173 +1,145 @@
-# Como saber se meu tráfego pago está bom?
+# Analisador de Tráfego Pago — Facebook Ads
 
-Guia prático de métricas para avaliar campanhas no **Facebook Ads**.
+Ferramenta para conectar à sua conta de anúncios, avaliar quais anúncios estão performando melhor e gerar sugestões personalizadas de captação de leads.
 
 ---
 
-## As 8 métricas que você precisa monitorar
+## Início rápido
 
-| Métrica | O que mede | Fórmula |
-|--------|-----------|---------|
-| **CTR** | Taxa de cliques | Cliques ÷ Impressões × 100 |
-| **CPC** | Custo por clique | Gasto ÷ Cliques |
-| **CPM** | Custo por mil impressões | Gasto ÷ Impressões × 1000 |
-| **Taxa de Conversão** | % de cliques que viraram ação | Conversões ÷ Cliques × 100 |
-| **ROAS** | Retorno sobre o investimento | Receita ÷ Gasto |
-| **Frequência** | Vezes que a mesma pessoa viu o anúncio | Impressões ÷ Alcance |
-| **CPL** | Custo por lead | Gasto ÷ Leads |
-| **Score de Relevância** | Nota do Facebook para o anúncio | Avaliado pelo Facebook (1–10) |
+### 1. Instale as dependências
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Configure suas credenciais
+
+```bash
+cp .env.example .env
+```
+
+Edite o arquivo `.env` com seu token e ID de conta:
+
+```
+FB_ACCESS_TOKEN=SEU_TOKEN_AQUI
+FB_AD_ACCOUNT_ID=act_XXXXXXXXXX
+```
+
+### 3. Execute a análise
+
+```bash
+python main.py
+```
+
+---
+
+## Como obter o Token de Acesso
+
+### Opção A — Explorador da API (mais rápido para testes)
+
+1. Acesse: https://developers.facebook.com/tools/explorer
+2. Selecione seu **App** (ou crie um em developers.facebook.com)
+3. Clique em **"Gerar Token de Acesso"**
+4. Marque as permissões: `ads_read`, `business_management`
+5. Copie o token gerado
+
+> ⚠️ Tokens do Explorador expiram em ~1 hora. Para uso contínuo, use a Opção B.
+
+### Opção B — System User (produção, token de longa duração)
+
+1. Acesse: https://business.facebook.com/settings/system-users
+2. Crie um **Usuário do Sistema** com função "Anunciante"
+3. Clique em **"Gerar Token"** e selecione as permissões:
+   - `ads_read`
+   - `business_management`
+4. Copie o token (ele não expira)
+
+---
+
+## Como obter o ID da Conta de Anúncios
+
+1. Acesse o Gerenciador de Anúncios: https://business.facebook.com/adsmanager
+2. Olhe a URL do navegador — o ID aparece como `act_XXXXXXXXXX`
+3. Ou vá em: **Configurações da conta** > **Informações da conta** > **ID da conta**
+
+O ID deve ser inserido no formato `act_123456789` (com o prefixo `act_`).
+
+---
+
+## Opções de linha de comando
+
+```bash
+# Período padrão (últimos 30 dias)
+python main.py
+
+# Últimos 7 dias
+python main.py --period last_7d
+
+# Últimos 90 dias
+python main.py --period last_90d
+
+# Mostrar top 10 anúncios no ranking
+python main.py --top 10
+
+# Combinar opções
+python main.py --period last_14d --top 8
+```
+
+Períodos disponíveis: `today`, `yesterday`, `last_7d`, `last_14d`, `last_30d`, `last_90d`, `this_month`, `last_month`
+
+---
+
+## O que a ferramenta analisa
+
+### Visão geral da conta
+Agrega todas as métricas e avalia a saúde geral das campanhas:
+
+| Métrica | Fórmula |
+|---------|---------|
+| CTR | Cliques ÷ Impressões × 100 |
+| CPC | Gasto ÷ Cliques |
+| CPM | Gasto ÷ Impressões × 1000 |
+| Taxa de Conversão | Compras ÷ Cliques × 100 |
+| ROAS | Receita ÷ Gasto |
+| Frequência | Impressões ÷ Alcance |
+| CPL | Gasto ÷ Leads |
+
+### Ranking dos melhores anúncios
+Pontuação ponderada considerando ROAS, taxa de conversão, CPL, CTR e CPC.
+
+### Sugestões de geração de leads
+Recomendações personalizadas baseadas nos padrões da sua conta:
+- Quais anúncios escalar
+- Criação de públicos Lookalike
+- Estratégias de remarketing
+- Testes de criativo e oferta
+- Anúncios para pausar
+
+---
+
+## Estrutura do projeto
+
+```
+Facebook/
+├── main.py                  # Ponto de entrada — executa a análise completa
+├── facebook_connector.py    # Conexão com a Meta Ads API
+├── lead_suggestions.py      # Ranking e gerador de sugestões de leads
+├── paid_traffic_metrics.py  # Benchmarks e avaliação de métricas
+├── requirements.txt         # Dependências Python
+├── .env.example             # Modelo de configuração
+└── .env                     # Suas credenciais (não commitado)
+```
 
 ---
 
 ## Benchmarks de referência
 
-### CTR (Taxa de Cliques)
-| Status | Faixa |
-|--------|-------|
-| 🔴 Ruim | < 0,5% |
-| 🟠 Regular | 0,5% – 1,0% |
-| 🟡 Bom | 1,0% – 2,0% |
-| 🟢 Excelente | > 2,0% |
-
-### CPC (Custo por Clique)
-| Status | Faixa |
-|--------|-------|
-| 🟢 Excelente | < R$ 0,50 |
-| 🟡 Bom | R$ 0,50 – R$ 1,50 |
-| 🟠 Regular | R$ 1,50 – R$ 3,00 |
-| 🔴 Ruim | > R$ 3,00 |
-
-### CPM (Custo por Mil Impressões)
-| Status | Faixa |
-|--------|-------|
-| 🟢 Excelente | < R$ 10 |
-| 🟡 Bom | R$ 10 – R$ 25 |
-| 🟠 Regular | R$ 25 – R$ 50 |
-| 🔴 Ruim | > R$ 50 |
-
-### Taxa de Conversão
-| Status | Faixa |
-|--------|-------|
-| 🔴 Ruim | < 1% |
-| 🟠 Regular | 1% – 3% |
-| 🟡 Bom | 3% – 5% |
-| 🟢 Excelente | > 5% |
-
-### ROAS (Retorno sobre Investimento)
-| Status | Faixa |
-|--------|-------|
-| 🔴 Ruim | < 1,5x |
-| 🟠 Regular | 1,5x – 3,0x |
-| 🟡 Bom | 3,0x – 5,0x |
-| 🟢 Excelente | > 5,0x |
-
-### Frequência
-| Status | Faixa |
-|--------|-------|
-| 🟢 Excelente | 1 – 2x |
-| 🟡 Bom | 2 – 3,5x |
-| 🟠 Regular | 3,5 – 5x |
-| 🔴 Ruim | > 5x (fadiga de anúncio) |
-
-### CPL (Custo por Lead)
-| Status | Faixa |
-|--------|-------|
-| 🟢 Excelente | < R$ 5 |
-| 🟡 Bom | R$ 5 – R$ 15 |
-| 🟠 Regular | R$ 15 – R$ 30 |
-| 🔴 Ruim | > R$ 30 |
-
-### Score de Relevância
-| Status | Faixa |
-|--------|-------|
-| 🔴 Ruim | 1 – 4 |
-| 🟠 Regular | 4 – 6 |
-| 🟡 Bom | 6 – 8 |
-| 🟢 Excelente | 8 – 10 |
-
----
-
-## O que fazer quando as métricas estão ruins?
-
-| Problema | Causa provável | Ação |
-|---------|---------------|------|
-| CTR baixo | Criativo fraco | Troque imagem, headline e CTA |
-| CPC alto | Público muito disputado | Refine a segmentação |
-| CPM alto | Mercado saturado | Expanda ou teste novos públicos |
-| Conversão baixa | Landing page ruim | Revise velocidade, oferta e CTA |
-| ROAS < 1 | Campanha no prejuízo | Pause e revise todo o funil |
-| Frequência > 5 | Fadiga de anúncio | Renove os criativos urgentemente |
-| CPL alto | Oferta pouco atrativa | Melhore o lead magnet |
-| Score < 4 | Anúncio irrelevante | Redefina público ou criativo |
-
----
-
-## Como usar a ferramenta de avaliação
-
-```bash
-python paid_traffic_metrics.py
-```
-
-Edite os dados no final do arquivo `paid_traffic_metrics.py`:
-
-```python
-minha_campanha = {
-    "impressoes": 50_000,
-    "cliques": 600,
-    "gasto": 450.00,
-    "conversoes": 18,
-    "receita": 1_800.00,
-    "alcance": 30_000,
-    "leads": 90,
-    "score_relevancia": 7,
-}
-```
-
-### Exemplo de saída
-
-```
-============================================================
-   RELATÓRIO DE TRÁFEGO PAGO — FACEBOOK ADS
-============================================================
-
-🟡 Taxa de Cliques (Click-Through Rate)
-   Valor: 1.20%  |  Status: BOM
-
-🟡 Custo por Clique
-   Valor: R$ 0.75  |  Status: BOM
-
-🟢 Custo por Mil Impressões
-   Valor: R$ 9.00  |  Status: EXCELENTE
-
-🟡 Taxa de Conversão
-   Valor: 3.00%  |  Status: BOM
-
-🟢 Retorno sobre o Investimento em Anúncios
-   Valor: 4.00x  |  Status: BOM
-
-🟡 Frequência média de exibição por pessoa
-   Valor: 1.67x  |  Status: EXCELENTE
-
-🟡 Custo por Lead
-   Valor: R$ 5.00  |  Status: BOM
-
-🟡 Pontuação de Relevância do Anúncio
-   Valor: 7.00/10  |  Status: BOM
-
-------------------------------------------------------------
-🟡 PONTUAÇÃO GERAL DA CAMPANHA: 7.6/10 — BOM
-============================================================
-```
-
----
-
-## Resumo rápido: checklist de campanha saudável
-
-- [ ] CTR acima de 1%
-- [ ] CPC abaixo de R$ 1,50
-- [ ] CPM abaixo de R$ 25
-- [ ] Taxa de Conversão acima de 3%
-- [ ] ROAS acima de 3x
-- [ ] Frequência entre 1 e 3,5
-- [ ] CPL dentro do seu CAC máximo
-- [ ] Score de Relevância acima de 6
+| Métrica | Ruim | Regular | Bom | Excelente |
+|---------|------|---------|-----|-----------|
+| CTR | < 0,5% | 0,5–1% | 1–2% | > 2% |
+| CPC | > R$ 3 | R$ 1,50–3 | R$ 0,50–1,50 | < R$ 0,50 |
+| CPM | > R$ 50 | R$ 25–50 | R$ 10–25 | < R$ 10 |
+| Conversão | < 1% | 1–3% | 3–5% | > 5% |
+| ROAS | < 1,5x | 1,5–3x | 3–5x | > 5x |
+| Frequência | > 5x | 3,5–5x | 2–3,5x | 1–2x |
+| CPL | > R$ 30 | R$ 15–30 | R$ 5–15 | < R$ 5 |
