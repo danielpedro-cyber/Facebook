@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1920px;font-family:Montserrat,sans-serif;overflow:hidden;
+ background:radial-gradient(ellipse at 50% 0%,#123a8c 0%,#0a1f4d 45%,#050f2a 100%);color:#fff;position:relative}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:60px 60px;mask-image:linear-gradient(#000,transparent 70%)}
+.glow{position:absolute;width:900px;height:900px;border-radius:50%;background:radial-gradient(#1f6bff55,transparent 65%);left:90px;top:720px}
+.wrap{position:relative;padding:90px 70px 0}
+.top{display:flex;align-items:center;justify-content:center;gap:34px;padding:22px 44px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);width:fit-content;margin:0 auto}
+.top img{width:96px;height:96px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 3px #c9a85a}
+.brand{font-weight:900;font-style:italic;font-size:38px;line-height:1;letter-spacing:-.5px}
+.brand span{display:block;color:#4d9bff}
+.sep{width:2px;height:70px;background:rgba(255,255,255,.3)}
+.dp{display:flex;align-items:center;gap:16px;font-weight:600;font-size:28px;line-height:1.15}
+.dp b{width:64px;height:64px;border-radius:16px;background:#1f6bff;display:grid;place-items:center;font-size:34px;font-weight:800}
+.tag{margin:80px auto 0;width:fit-content;padding:14px 34px;border-radius:999px;background:#1f6bff;font-weight:800;font-size:30px;letter-spacing:8px;display:flex;align-items:center;gap:16px}
+.tag i{width:16px;height:16px;border-radius:50%;background:#ff3b4a;box-shadow:0 0 0 6px rgba(255,59,74,.3)}
+h1{text-align:center;font-weight:900;font-size:150px;line-height:.95;letter-spacing:-5px;margin-top:36px}
+h1 span{display:block;background:linear-gradient(90deg,#5aa8ff,#1f6bff);-webkit-background-clip:text;color:transparent}
+.people{display:flex;gap:36px;margin-top:70px}
+.p{flex:1}
+.ph{height:600px;border-radius:40px;overflow:hidden;border:3px solid rgba(90,168,255,.5);box-shadow:0 30px 60px rgba(0,0,0,.45)}
+.ph img{width:100%;height:100%;object-fit:cover;transform:scale(1.04)}
+.p h3{font-size:46px;font-weight:800;margin-top:30px}
+.p p{font-size:27px;font-weight:500;color:#b9cbf0;margin-top:8px;line-height:1.3}
+.date{margin-top:70px;display:flex;align-items:center;justify-content:center;gap:50px;background:#fff;color:#0a1f4d;border-radius:36px;padding:34px 40px}
+.d1{text-align:center}
+.d1 b{display:block;font-size:96px;font-weight:900;line-height:.9;letter-spacing:-3px}
+.d1 small{font-size:28px;font-weight:800;letter-spacing:8px}
+.vs{width:4px;height:130px;background:#0a1f4d;opacity:.2}
+.hr{font-size:140px;font-weight:900;color:#1f6bff;letter-spacing:-5px;line-height:1}
+</style></head><body>
+<div class="grid"></div><div class="glow"></div>
+<div class="wrap">
+ <div class="top">
+  <img src="bussola.jpg">
+  <div class="brand">A BÚSSOLA<span>DO CONSÓRCIO</span></div>
+  <div class="sep"></div>
+  <div class="dp"><b>dp</b><div>Educação<br>Empresarial</div></div>
+ </div>
+ <div class="tag"><i></i>LIVE PRÉ-EVENTO</div>
+ <h1>Esquenta<span>da Bússola</span></h1>
+ <div class="people">
+  <div class="p"><div class="ph"><img src="daniel.jpg"></div><h3>Daniel Pedro</h3><p>Fundador da DP Soluções<br>e Investimentos</p></div>
+  <div class="p"><div class="ph"><img src="tamis.jpg"></div><h3>Tamis Luzzi</h3><p>Sócia-fundadora da<br>LC Compras Inteligentes</p></div>
+ </div>
+ <div class="date">
+  <div class="d1"><b>17 NOV</b><small>TERÇA-FEIRA</small></div>
+  <div class="vs"></div>
+  <div class="hr">19h50</div>
+ </div>
+</div>
+</body></html>
