@@ -23,18 +23,18 @@ from scipy.signal import butter, fftconvolve, sosfilt
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SR = 44100
-DURACAO = 90.0
+DURACAO = 78.0
 BPM = 120
 BATIDA = 60 / BPM  # 0,5 s
 COMPASSO = 4 * BATIDA  # 2 s
 
 # Cenas (s) — iguais a CENAS em src/constantes.ts
-BAIXA = (18, 27)
-VIRADA = 27
+BAIXA = (21, 29)
+VIRADA = 29
 RITMO = 35  # entra percussão leve
-ESCOLHA = 53
-LIBERDADE = (73, 80)
-FINAL = 80
+ESCOLHA = 50
+LIBERDADE = (64, 69)
+FINAL = 69
 
 # Progressões (notas MIDI). Normal: C – G – Am – F. Baixa: Am – F – Dm – E(sus)
 NORMAL = [(48, [60, 64, 67, 72]), (43, [59, 62, 67, 71]), (45, [57, 60, 64, 69]), (41, [57, 60, 65, 69])]
@@ -175,7 +175,7 @@ def main() -> int:
     # acorde final sustentado
     for nota in [60, 64, 67, 72]:
         s = tom(hz(nota), 4.0, (1.0, 0.2, 0.05), detune=0.002)
-        adiciona(pad, s * np.exp(-np.arange(len(s)) / SR / 1.6) * env_adsr(len(s), 0.02, 0.5), 86.0, 0.06)
+        adiciona(pad, s * np.exp(-np.arange(len(s)) / SR / 1.6) * env_adsr(len(s), 0.02, 0.5), DURACAO - 4.0, 0.06)
 
     pad = sosfilt(butter(2, 2200, "lowpass", fs=SR, output="sos"), pad, axis=1)
     arpejo = sosfilt(butter(2, 3800, "lowpass", fs=SR, output="sos"), arpejo, axis=1)

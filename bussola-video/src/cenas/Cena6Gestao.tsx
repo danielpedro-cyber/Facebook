@@ -1,94 +1,83 @@
 import React from 'react';
-import { CORES, FONTE, TEXTOS, momento } from '../constantes';
+import { Easing, interpolate, useCurrentFrame } from 'remotion';
+import { CORES, FONTE, TEXTOS, momento, s } from '../constantes';
 import { Cenario, Palco } from '../componentes/Base';
 import { Personagem } from '../componentes/Personagem';
-import { useCrescer, useEntrada } from '../componentes/animacoes';
+import { useEntrada, useMola } from '../componentes/animacoes';
 
-// CENA 6 — gestão do investimento (42 a 50 s): o consultor faz as contas.
-// Os "números" são perguntas (?) — nada de valores ou promessas de ganho.
-const ATRASOS = [momento('gestao', 'invisto', 0.5), momento('gestao', 'devolve'), momento('gestao', 'devolve', 0.6)];
-
-const Pergunta: React.FC<{ texto: string; atraso: number }> = ({ texto, atraso }) => (
-  <div
-    style={{
-      width: 680,
-      height: 108,
-      display: 'flex',
-      alignItems: 'center',
-      gap: 22,
-      padding: '0 24px',
-      background: CORES.branco,
-      border: `3px solid ${CORES.trilho}`,
-      borderRadius: 24,
-      ...useEntrada(atraso, 70),
-    }}
-  >
-    <div
-      style={{
-        width: 68,
-        height: 68,
-        borderRadius: 999,
-        background: CORES.royal,
-        color: CORES.branco,
-        fontFamily: FONTE.titulo,
-        fontSize: 46,
-        fontWeight: 800,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
-        ...useCrescer(atraso + 0.2),
-      }}
-    >
-      ?
-    </div>
-    <span style={{ fontFamily: FONTE.titulo, fontSize: 44, fontWeight: 700 }}>{texto}</span>
-  </div>
-);
-
-const Comparacao: React.FC<{ rotulo: string; resultado: string; atraso: number; destaque?: boolean }> = ({ rotulo, resultado, atraso, destaque }) => (
-  <div
-    style={{
-      width: 960,
-      padding: '18px 30px',
-      borderRadius: 999,
-      display: 'flex',
-      justifyContent: 'center',
-      gap: 16,
-      fontSize: 42,
-      fontWeight: 600,
-      background: destaque ? CORES.marinho : 'transparent',
-      color: destaque ? CORES.branco : CORES.cinza,
-      border: `3px solid ${destaque ? CORES.marinho : CORES.trilho}`,
-      ...useEntrada(atraso),
-    }}
-  >
-    <span>{rotulo}</span>
-    <span>=</span>
-    <span style={{ fontWeight: 800 }}>{resultado}</span>
-  </div>
-);
+// CENA 6 — gestão do investimento: frase de impacto em tela cheia.
+// "Investir em canal de venda não é GASTO. É INVESTIMENTO, e investimento se mede pelo retorno."
+// Nada de valores ou promessas de ganho.
+export const RISCA_GASTO = momento('gestao', 'naoGasto', 0.6);
+export const ENTRA_INVESTIMENTO = momento('gestao', 'investimento');
 
 export const Cena6Gestao: React.FC = () => {
-  const entra = useCrescer(0.05);
-  const final = momento('gestao', 'investimento', 0.3);
+  const frame = useCurrentFrame();
+  const t = TEXTOS.gestao;
+  const l1 = useEntrada(momento('gestao', 'canal'), 50);
+  const gasto = useMola(momento('gestao', 'naoGasto'), 140);
+  const risco = interpolate(frame, [s(RISCA_GASTO), s(RISCA_GASTO + 0.35)], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+  const invest = useMola(ENTRA_INVESTIMENTO, 120);
+  const retorno = useEntrada(momento('gestao', 'retorno'), 40);
+  const pers = useEntrada(0.2, 40);
   return (
     <Palco style={{ justifyContent: 'flex-start' }}>
-      <div style={{ position: 'absolute', top: 10, left: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
-        {TEXTOS.gestao.map((t, i) => (
-          <Pergunta key={t} texto={t} atraso={ATRASOS[i]} />
-        ))}
+      <div style={{ ...l1, fontFamily: FONTE.titulo, fontWeight: 600, fontSize: 64, color: CORES.cinza, textAlign: 'center' }}>{t.canal}</div>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 26, marginTop: 6, opacity: Math.min(1, gasto * 1.5) }}>
+        <span style={{ fontFamily: FONTE.titulo, fontWeight: 600, fontSize: 64, color: CORES.cinza }}>{t.naoE}</span>
+        <span
+          style={{
+            position: 'relative',
+            fontFamily: FONTE.titulo,
+            fontWeight: 800,
+            fontSize: 170,
+            letterSpacing: -4,
+            color: interpolate(risco, [0, 1], [0, 1]) > 0.5 ? '#9AA6BC' : CORES.marinho,
+            display: 'inline-block',
+            transform: `scale(${0.6 + 0.4 * gasto})`,
+          }}
+        >
+          {t.gasto}
+          <span
+            style={{
+              position: 'absolute',
+              left: -10,
+              top: '52%',
+              height: 16,
+              width: `${risco * 104}%`,
+              background: CORES.marinho,
+              borderRadius: 8,
+              transform: 'rotate(-4deg)',
+            }}
+          />
+        </span>
       </div>
-      <Cenario altura={560} style={{ position: 'absolute', top: 0, left: 0 }}>
-        <ellipse cx={850} cy={518} rx={100} ry={14} fill={CORES.royalClaro} />
-        <g opacity={entra.opacity as number}>
-          <Personagem pose="segurando" objeto="calculadora" espelhado expressao="neutro" x={850} y={515} escala={0.9} />
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          gap: 22,
+          marginTop: 10,
+          opacity: Math.min(1, invest * 1.5),
+          transform: `scale(${0.6 + 0.4 * invest})`,
+        }}
+      >
+        <span style={{ fontFamily: FONTE.titulo, fontWeight: 600, fontSize: 64, color: CORES.cinza }}>{t.e}</span>
+        <span style={{ fontFamily: FONTE.titulo, fontWeight: 800, fontSize: 116, letterSpacing: -3, color: CORES.royal }}>{t.investimento}</span>
+      </div>
+      <div style={{ ...retorno, marginTop: 24, fontFamily: FONTE.titulo, fontWeight: 600, fontSize: 52, color: CORES.marinho, textAlign: 'center', maxWidth: 760, lineHeight: 1.1 }}>
+        {t.retorno}
+      </div>
+      <Cenario altura={820} style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }}>
+        <g style={{ opacity: pers.opacity as number }}>
+          <ellipse cx={850} cy={812} rx={80} ry={12} fill={CORES.royalClaro} />
+          <Personagem pose="segurando" objeto="calculadora" espelhado expressao="feliz" x={850} y={810} escala={0.62} />
         </g>
       </Cenario>
-      <div style={{ position: 'absolute', top: 580, left: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <Comparacao rotulo="Gastar sem medir" resultado="despesa" atraso={momento('gestao', 'despesa', 0.3)} />
-        <Comparacao rotulo="Gastar medindo" resultado="investimento" atraso={final} destaque />
-      </div>
     </Palco>
   );
 };

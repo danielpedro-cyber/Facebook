@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { getLength, getPointAtLength } from '@remotion/paths';
-import { CENAS, CORES, FONTE, LAYOUT, PARADAS, VIDEO, momento, s } from '../constantes';
+import { CENAS, CORES, FONTE, LAYOUT, PARADAS, VIDEO, s } from '../constantes';
 import { RosaDosVentos } from './Icones';
 
 // Estrada azul que se desenha no topo do vídeo e ganha uma parada numerada
@@ -112,10 +112,10 @@ export const Rota: React.FC = () => {
         );
       })}
 
-      {/* prévia no gancho: "?" pulsando no ponto onde a maioria desiste (parada 2) */}
+      {/* prévia no gancho e na promessa: "?" pulsando onde a maioria desiste (parada 2) */}
       {(() => {
-        const ini = momento('gancho', 'mesmoPonto') + CENAS.gancho.inicio;
-        const fim = CENAS.gancho.fim;
+        const ini = 0.15;
+        const fim = CENAS.promessa.fim;
         const t = frame / fps;
         if (t < ini || t > fim) return null;
         const entra = spring({ frame: frame - s(ini), fps, config: { damping: 12, stiffness: 150 } });
@@ -129,6 +129,22 @@ export const Rota: React.FC = () => {
             <text textAnchor="middle" dominantBaseline="central" fontFamily={FONTE.titulo} fontWeight={800} fontSize={40} fill={CORES.branco}>
               ?
             </text>
+          </g>
+        );
+      })()}
+
+      {/* promessa: a bandeira do destino aparece no fim da rota */}
+      {(() => {
+        const { inicio, fim } = CENAS.promessa;
+        const t = frame / fps;
+        if (t < inicio || t > fim) return null;
+        const entra = spring({ frame: frame - s(inicio + 0.3), fps, config: { damping: 12, stiffness: 140 } });
+        const sai = interpolate(t, [fim - 0.3, fim], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+        const pt = pontos[pontos.length - 1];
+        return (
+          <g transform={`translate(${pt.x} ${pt.y}) scale(${entra})`} opacity={sai}>
+            <path d="M -4 6 V -58 M -4 -56 H 34 L 26 -44 L 34 -32 H -4" stroke={CORES.marinho} strokeWidth={6} fill={CORES.royalClaro} strokeLinejoin="round" strokeLinecap="round" />
+            <circle r={11} fill={CORES.marinho} />
           </g>
         );
       })()}

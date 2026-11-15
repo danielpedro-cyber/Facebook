@@ -10,7 +10,7 @@ export const VIDEO = {
   largura: 1080,
   altura: 1920,
   fps: 30,
-  duracaoSeg: 90,
+  duracaoSeg: 78,
 };
 
 /** Converte segundos em quadros. */
@@ -75,14 +75,15 @@ export const LAYOUT = {
 // -----------------------------------------------------------------------------
 export const CENAS = {
   gancho: { inicio: 0, fim: 8 },
-  mercadoQuente: { inicio: 8, fim: 18 },
-  baixa: { inicio: 18, fim: 27 },
-  virada: { inicio: 27, fim: 35 },
-  canais: { inicio: 35, fim: 45 },
-  gestao: { inicio: 45, fim: 53 },
-  escolha: { inicio: 53, fim: 73 },
-  liberdade: { inicio: 73, fim: 80 },
-  fechamento: { inicio: 80, fim: 90 },
+  promessa: { inicio: 8, fim: 13 },
+  mercadoQuente: { inicio: 13, fim: 21 },
+  baixa: { inicio: 21, fim: 29 },
+  virada: { inicio: 29, fim: 35 },
+  canais: { inicio: 35, fim: 42 },
+  gestao: { inicio: 42, fim: 50 },
+  escolha: { inicio: 50, fim: 64 },
+  liberdade: { inicio: 64, fim: 69 },
+  fechamento: { inicio: 69, fim: 78 },
 } as const;
 
 export type NomeCena = keyof typeof CENAS;
@@ -125,41 +126,39 @@ export const momento = (cena: NomeCena, id: string, fracao = 0): number => {
 // Conteúdo das cenas
 // -----------------------------------------------------------------------------
 export const TEXTOS = {
+  serie: 'Bússola #1', // marca da série (episódio)
   gancho: {
-    pergunta: 'Você sabia que a maioria dos vendedores desiste no mesmo ponto da carreira?',
-    destaque: 'desiste no mesmo ponto', // trecho da pergunta em destaque
-    resposta: 'E tudo começa do mesmo jeito...',
+    pergunta: 'Por que a maioria dos vendedores desiste?', // 1º quadro = capa (menos de 10 palavras)
+    destaque: 'desiste?',
   },
+  promessa: { linha1: 'Fica até o final:', destaque: '2 caminhos', linha2: 'pra sair dessa.' },
   virada: { antes: 'Pra continuar vendendo, é preciso ', destaque: 'investir.' },
   canais: ['BNI e network', 'Educação e eventos', 'Propaganda e conteúdo', 'Tráfego pago'],
-  gestao: ['Quanto invisto?', 'Quantas vendas gera?', 'Quanto ganho por venda?'],
+  gestao: {
+    canal: 'Investir em canal de venda',
+    naoE: 'não é',
+    gasto: 'GASTO.',
+    e: 'É',
+    investimento: 'INVESTIMENTO.',
+    retorno: 'e investimento se mede pelo retorno.',
+  },
   caminhos: {
     vendedor: {
       titulo: 'Vendedor de alta performance',
-      itens: [
-        'Tudo que entra é seu',
-        'Autonomia sobre agenda e clientes',
-        'Operação enxuta, pouco risco e pouco custo fixo',
-        'Retorno rápido e direto',
-        'Foco no que você faz de melhor: vender',
-      ],
+      itens: ['Tudo que entra é seu', 'Autonomia e pouco custo fixo', 'Retorno rápido e direto'],
     },
     empresario: {
       titulo: 'Empresário',
-      itens: [
-        'Tudo que entra é da empresa',
-        'Investe em estrutura, pessoas e gestão',
-        'Escala: o resultado cresce com o time',
-        'Renda que não depende só das suas horas',
-        'Construção de um negócio que vai além de você',
-      ],
+      itens: ['Tudo que entra é da empresa', 'Estrutura, pessoas e gestão', 'Escala: cresce com o time'],
     },
   },
   liberdade: { palavra: 'LIBERDADE', sub: 'depende da sua gestão' },
   fechamento: {
-    pergunta: 'Qual caminho você vai escolher?',
-    cta1: 'Comenta aqui:',
-    cta2: 'Alta Performance ou Empresário?',
+    envio1: 'Manda pra alguém que está',
+    envio2: 'começando em vendas.',
+    comenta: 'E comenta:',
+    opcao1: 'Alta Performance',
+    opcao2: 'Empresário?',
   },
 };
 
@@ -173,7 +172,9 @@ export const AUDIO = {
   narracao: 'narracao.mp3',
   trilha: 'trilha.mp3',
   volumeNarracao: 1,
-  volumeTrilhaComNarracao: 0.16, // trilha baixinha por baixo da voz
+  volumeTrilhaComNarracao: 0.11, // trilha abaixa sozinha enquanto a voz fala (ducking)
+  volumeTrilhaEntreFrases: 0.22,
+  volumeEfeitos: 0.7,
   volumeTrilhaSemNarracao: 0.3,
   fadeTrilhaSeg: 1.5,
 };

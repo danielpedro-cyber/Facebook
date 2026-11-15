@@ -1,12 +1,15 @@
 import React from 'react';
-import { interpolate, useCurrentFrame } from 'remotion';
+import { Easing, interpolate, useCurrentFrame } from 'remotion';
 import { CORES, FONTE, momento, s } from '../constantes';
 import { Cenario, Palco, Titulo } from '../componentes/Base';
 import { Personagem } from '../componentes/Personagem';
 import { useEntrada, useProgresso } from '../componentes/animacoes';
 
-// CENA 3 — a baixa (15 a 24 s). Único lugar com vermelho suave.
-const SILENCIO = momento('baixa', 'telefone', 0.7); // "o telefone para de tocar"
+// CENA 3 — a baixa. Único lugar com vermelho suave.
+// Zoom dramático em "É aqui que a maioria desiste".
+// o celular toca (efeito sonoro) e para pouco antes de "o telefone para de tocar"
+export const TOQUE_INICIO = 0.2;
+const SILENCIO = TOQUE_INICIO + 1.75;
 const QUEDA = momento('baixa', 'vendasCaem'); // "e as vendas caem"
 const ANTES = [0.95, 0.9, 0.85, 0.92, 0.88];
 const DEPOIS = [0.95, 0.72, 0.48, 0.28, 0.1];
@@ -37,10 +40,15 @@ export const Cena3Baixa: React.FC = () => {
   const frame = useCurrentFrame();
   const titulo = useEntrada(0.2);
   const desiste = useEntrada(momento('baixa', 'desiste'));
+  const zoom = interpolate(frame, [s(momento('baixa', 'desiste') - 0.2), s(momento('baixa', 'desiste') + 0.6)], [1, 1.1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
   const nuvem = interpolate(frame, [s(SILENCIO), s(SILENCIO + 0.6)], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
   const vibrando = frame < s(SILENCIO) && Math.floor(frame / 6) % 2 === 0;
   return (
-    <Palco style={{ justifyContent: 'flex-start' }}>
+    <Palco style={{ justifyContent: 'flex-start', transform: `scale(${zoom})`, transformOrigin: '50% 12%' }}>
       <Titulo style={titulo}>A lista acaba.</Titulo>
       <Cenario altura={580} style={{ position: 'absolute', top: 100, left: 0 }}>
         <ellipse cx={420} cy={560} rx={470} ry={18} fill={CORES.royalClaro} />

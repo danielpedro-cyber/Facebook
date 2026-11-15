@@ -5,14 +5,15 @@ import { IconeAlvo, IconeCapelo, IconeMegafone, IconeRede } from '../componentes
 import { Personagem } from '../componentes/Personagem';
 import { useCrescer, useEntrada } from '../componentes/animacoes';
 
-// CENA 5 — canais (32 a 42 s): o consultor aponta para os canais pagos.
+// CENA 5 — canais: o consultor aponta para os canais pagos.
 const ICONES = [IconeRede, IconeCapelo, IconeMegafone, IconeAlvo];
-const ATRASOS = [
+export const ATRASOS_CANAIS = [
   momento('canais', 'bni'),
-  momento('canais', 'educacao'),
-  momento('canais', 'propaganda'),
-  momento('canais', 'propaganda', 0.5), // "tráfego pago"
+  momento('canais', 'eventos'), // "eventos"
+  momento('canais', 'eventos', 0.3), // "propaganda"
+  momento('canais', 'eventos', 0.65), // "tráfego pago"
 ];
+const ATRASOS = ATRASOS_CANAIS;
 
 const Cartao: React.FC<{ indice: number }> = ({ indice }) => {
   const Icone = ICONES[indice];

@@ -42,7 +42,7 @@ INICIO_CENA = 0.3  # s de respiro no começo de cada cena
 FIM_CENA = 0.3  # s de respiro antes da próxima cena
 PAUSA_MIN = 0.22  # pausa mínima entre frases
 PAUSA_MAX = 0.85  # pausa máxima entre frases (o resto vira silêncio no fim)
-VELOCIDADE_BASE = 1.14  # >1 = mais devagar (length_scale do Piper)
+VELOCIDADE_BASE = 1.18  # >1 = mais devagar (length_scale do Piper) — ritmo didático
 LIMIAR_SILENCIO = 0.012
 
 

@@ -6,10 +6,11 @@ import { IconeLampada } from '../componentes/Icones';
 import { Personagem, useTrocaPose } from '../componentes/Personagem';
 import { useEntrada, useMola, useProgresso } from '../componentes/animacoes';
 
-// CENA 4 — virada de mentalidade (24 a 32 s): o consultor se levanta e tem a ideia.
+// CENA 4 — virada de mentalidade: o consultor se levanta e tem a ideia.
 const LEVANTA = 0.3;
 const ACENDE = 1.7;
-const DECIDE = momento('virada', 'investir');
+export const ACENDE_LAMPADA = ACENDE;
+const DECIDE = momento('virada', 'investir', 0.5);
 
 export const Cena4Virada: React.FC = () => {
   const levanta = useTrocaPose(LEVANTA, 0.6);
@@ -17,8 +18,8 @@ export const Cena4Virada: React.FC = () => {
   const lampada = useMola(ACENDE - 0.4);
   const acende = useProgresso(ACENDE, 0.5);
   const raios = useMola(ACENDE + 0.2);
-  const texto = useEntrada(momento('virada', 'daqui'));
-  const destaque = useMola(momento('virada', 'investir', 0.5));
+  const texto = useEntrada(momento('virada', 'investir'));
+  const destaque = useMola(momento('virada', 'investir', 0.7));
 
   const pose = decide > 0 ? 'apontando' : 'pensando';
   const dePose = decide > 0 ? 'pensando' : 'sentado';

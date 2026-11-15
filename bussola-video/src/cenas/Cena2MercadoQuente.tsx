@@ -5,11 +5,11 @@ import { IconeAmigos, IconeFamilia, IconeMaleta } from '../componentes/Icones';
 import { Personagem } from '../componentes/Personagem';
 import { useCrescer, useEntrada, useProgresso } from '../componentes/animacoes';
 
-// CENA 2 — mercado quente (5 a 15 s): o consultor liga para a família, amigos e ex-colegas.
+// CENA 2 — mercado quente: o consultor liga para a família, amigos e ex-colegas.
 const CONTATOS = [
-  { rotulo: 'Família', Icone: IconeFamilia, x: 150, y: 150, atraso: momento('mercadoQuente', 'familia', 0.55) },
-  { rotulo: 'Amigos', Icone: IconeAmigos, x: 810, y: 150, atraso: momento('mercadoQuente', 'amigos', 0.05) },
-  { rotulo: 'Ex-trabalho', Icone: IconeMaleta, x: 810, y: 420, atraso: momento('mercadoQuente', 'amigos', 0.5) },
+  { rotulo: 'Família', Icone: IconeFamilia, x: 150, y: 150, atraso: momento('mercadoQuente', 'familia', 0.12) },
+  { rotulo: 'Amigos', Icone: IconeAmigos, x: 810, y: 150, atraso: momento('mercadoQuente', 'familia', 0.38) },
+  { rotulo: 'Ex-trabalho', Icone: IconeMaleta, x: 810, y: 420, atraso: momento('mercadoQuente', 'familia', 0.68) },
 ];
 const MAO = { x: 545, y: 330 }; // posição aproximada do celular
 

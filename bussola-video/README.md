@@ -1,6 +1,6 @@
 # Bússola — vídeo vertical (Remotion)
 
-Vídeo 9:16 (1080x1920, 30 fps, 90 s) para Reels, TikTok e Shorts, feito com [Remotion](https://www.remotion.dev/) (React).
+Vídeo 9:16 (1080x1920, 30 fps, 78 s) para Reels, TikTok e Shorts, feito com [Remotion](https://www.remotion.dev/) (React).
 
 **Estilo:** institucional claro com a identidade d'A Bússola do Consórcio (logo, azul elétrico, rosa dos ventos como marcador das paradas, títulos em Urbanist e textos em Inter) + um personagem, o consultor, que percorre a estrada e vive a história em cada cena.
 
@@ -42,7 +42,7 @@ Quase tudo fica em **`src/constantes.ts`**:
 | Volumes de narração e trilha | `AUDIO` |
 | Faixas da tela (rota, conteúdo, legendas) | `LAYOUT`, `AREA_SEGURA` |
 
-Cada cena é um componente em `src/cenas/` (`Cena1Gancho.tsx` … `Cena9Fechamento.tsx`). Os elementos que aparecem o vídeo todo ficam em `src/componentes/`: `Personagem.tsx` (o consultor, com poses como andando, sentado, com celular, apontando, comemorando e acenando), `Rota.tsx` (estrada com paradas), `Legendas.tsx`, `Base.tsx` (fundo, palco, títulos, logo e estrada), `Icones.tsx` (ícones de linha e rosa dos ventos) e `animacoes.ts` (entradas com spring).
+Cada cena é um componente em `src/cenas/` (`Cena1Gancho.tsx`, `CenaPromessa.tsx`, `Cena2MercadoQuente.tsx` … `Cena9Fechamento.tsx`). Os efeitos sonoros e seus tempos ficam em `src/efeitos.ts`. Os elementos que aparecem o vídeo todo ficam em `src/componentes/`: `Personagem.tsx` (o consultor, com poses como andando, sentado, com celular, apontando, comemorando e acenando), `Rota.tsx` (estrada com paradas), `Legendas.tsx`, `Base.tsx` (fundo, palco, títulos, logo e estrada), `Icones.tsx` (ícones de linha e rosa dos ventos) e `animacoes.ts` (entradas com spring).
 
 Os tempos de animação dentro de cada cena são relativos ao início da cena. Se mudar a duração de uma cena em `CENAS`, revise esses atrasos no arquivo da cena.
 
@@ -71,16 +71,26 @@ cd ../..
 
 .venv/bin/python scripts/gerar_narracao.py --conferir 8   # narração + src/legendas.ts
 .venv/bin/python scripts/gerar_trilha.py                  # trilha
+.venv/bin/python scripts/gerar_efeitos.py                 # efeitos sonoros (public/sfx)
 npm run render
 ```
 
 - Em `roteiro.json`, `texto` é a legenda e `fala` (opcional) muda só a pronúncia. Por exemplo, "BNI" é falado como "bê éne i".
 - `--conferir 8` gera 8 versões de cada frase e escolhe a mais clara, conferindo com reconhecimento de fala (Whisper). Sem essa opção, o script não precisa do `faster-whisper`.
-- Se uma cena não couber no tempo, a fala dela é acelerada um pouco. Hoje só a cena 6 é acelerada, cerca de 10%.
+- Se uma cena não couber no tempo, a fala dela é acelerada um pouco. Hoje só o gancho é acelerado, cerca de 7%.
 
 ### Usar uma gravação de voz real
 
 Substitua `public/narracao.mp3` pela gravação e ajuste `inicio` e `fim` de cada trecho em `src/legendas.ts`. No Remotion Studio (`npm run dev`) dá para ver a forma de onda e o tempo exato de cada frase. As animações acompanham sozinhas.
+
+## Edição e retenção
+
+- **1º quadro = capa:** a pergunta do gancho já aparece no quadro 0, grande e com menos de 10 palavras (funciona sem som).
+- **Promessa:** "Fica até o final…" abre um ciclo que só fecha na escolha; a rota mostra o "?" e a bandeira do destino.
+- **Legenda karaokê:** a palavra falada fica destacada em azul.
+- **Transições:** a cena nova entra deslizando (a "câmera" segue a estrada), com zoom lento em cada cena e zoom dramático em "É aqui que a maioria desiste".
+- **Efeitos sonoros** (whoosh, pop, toque de celular, ding, impacto, brilho) e **ducking**: a trilha abaixa sozinha quando a voz fala.
+- **Final que gera envios:** "Manda pra alguém que está começando em vendas, antes que ele desista" (fecha o ciclo com o gancho) + pedido de comentário.
 
 ## Regras de layout seguidas
 

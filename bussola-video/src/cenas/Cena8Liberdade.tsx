@@ -5,7 +5,7 @@ import { Cenario, Palco, Titulo } from '../componentes/Base';
 import { Personagem, useTrocaPose } from '../componentes/Personagem';
 import { useEntrada, useMola, useProgresso } from '../componentes/animacoes';
 
-// CENA 8 — liberdade e gestão (70 a 80 s): os caminhos se reencontram e o consultor comemora.
+// CENA 8 — liberdade e gestão: os caminhos se reencontram e o consultor comemora.
 export const Cena8Liberdade: React.FC = () => {
   const frame = useCurrentFrame();
   const p = useProgresso(0.1, 1.3);
