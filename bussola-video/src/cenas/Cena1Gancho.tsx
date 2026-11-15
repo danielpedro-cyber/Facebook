@@ -1,13 +1,14 @@
 import React from 'react';
 import { useCurrentFrame } from 'remotion';
-import { CORES, FONTE, TEXTOS, momento, s } from '../constantes';
+import { CENAS, CORES, FONTE, TEXTOS, momentoOu, s } from '../constantes';
 import { Cenario, Palco } from '../componentes/Base';
 import { Personagem } from '../componentes/Personagem';
 
 // CENA 1 — gancho (0 a 8 s).
 // O PRIMEIRO QUADRO já mostra a pergunta inteira (funciona sem som e vira a capa do Reels).
 // Sem logo na abertura: ela aparece só no final.
-const OLHA = momento('gancho', 'praVoce'); // "esse vídeo é pra você": o consultor levanta a cabeça
+// "esse vídeo é pra você": o consultor levanta a cabeça (nas versões curtas, perto do fim do gancho)
+const OLHA = momentoOu('gancho', 'praVoce', CENAS.gancho.fim - CENAS.gancho.inicio - 1.2);
 
 export const Cena1Gancho: React.FC = () => {
   const frame = useCurrentFrame();
@@ -39,7 +40,7 @@ export const Cena1Gancho: React.FC = () => {
           marginTop: 30,
           fontFamily: FONTE.titulo,
           fontWeight: 700,
-          fontSize: 104,
+          fontSize: pergunta.length > 44 ? 92 : 104,
           lineHeight: 1.0,
           letterSpacing: -2.5,
           textAlign: 'center',
@@ -49,6 +50,7 @@ export const Cena1Gancho: React.FC = () => {
       >
         {pergunta.slice(0, i)}
         <span style={{ color: CORES.royal }}>{destaque}</span>
+        {pergunta.slice(i + destaque.length)}
       </div>
       <Cenario style={{ position: 'absolute', top: 0, left: 0 }}>
         <ellipse cx={480} cy={790} rx={260} ry={16} fill={CORES.royalClaro} />

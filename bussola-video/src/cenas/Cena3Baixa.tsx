@@ -1,6 +1,6 @@
 import React from 'react';
 import { Easing, interpolate, useCurrentFrame } from 'remotion';
-import { CORES, FONTE, momento, s } from '../constantes';
+import { CORES, FONTE, momento, s, temLegenda } from '../constantes';
 import { Cenario, Palco, Titulo } from '../componentes/Base';
 import { Personagem } from '../componentes/Personagem';
 import { useEntrada, useProgresso } from '../componentes/animacoes';
@@ -8,8 +8,10 @@ import { useEntrada, useProgresso } from '../componentes/animacoes';
 // CENA 3 — a baixa. Único lugar com vermelho suave.
 // Zoom dramático em "É aqui que a maioria desiste".
 // o celular toca (efeito sonoro) e para pouco antes de "o telefone para de tocar"
+// (nas versões sem a frase do telefone, o celular só vibra até "a lista acaba", sem som)
+export const TEM_TOQUE = temLegenda('telefone');
 export const TOQUE_INICIO = 0.2;
-const SILENCIO = TOQUE_INICIO + 1.75;
+const SILENCIO = TEM_TOQUE ? TOQUE_INICIO + 1.75 : momento('baixa', 'lista', 1);
 const QUEDA = momento('baixa', 'vendasCaem'); // "e as vendas caem"
 const ANTES = [0.95, 0.9, 0.85, 0.92, 0.88];
 const DEPOIS = [0.95, 0.72, 0.48, 0.28, 0.1];

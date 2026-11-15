@@ -1,0 +1,57 @@
+{
+  "_comentario": "Roteiro da narração. Cada frase é sintetizada inteira (entonação natural) e dividida em trechos de legenda. 'fala' (opcional) muda só a pronúncia, não a legenda. Mantenha 'inicio'/'fim' iguais a CENAS em src/constantes.ts.",
+  "cenas": [
+    { "cena": "gancho", "inicio": 0, "fim": 4.6, "frases": [
+      [{"id": "porque", "texto": "Por que a maioria dos vendedores desiste?"}]
+    ]},
+    { "cena": "promessa", "inicio": 4.6, "fim": 9.2, "frases": [
+      [{"id": "fica", "texto": "Fica até o final:"},
+       {"id": "doisCaminhos", "texto": "eu te mostro os dois caminhos pra sair dessa."}]
+    ]},
+    { "cena": "mercadoQuente", "inicio": 9.2, "fim": 16.2, "frases": [
+      [{"id": "todoMundo", "texto": "Todo mundo começa igual:"},
+       {"id": "familia", "texto": "família, amigos, antigo trabalho."}],
+      [{"id": "semCusto", "texto": "Não custa nada,"},
+       {"id": "coragem", "texto": "mas exige coragem."}]
+    ]},
+    { "cena": "baixa", "inicio": 16.2, "fim": 21.8, "frases": [
+      [{"id": "lista", "texto": "Até que a lista acaba"},
+       {"id": "vendasCaem", "texto": "e as vendas caem."}],
+      [{"id": "desiste", "texto": "É aqui que a maioria desiste."}]
+    ]},
+    { "cena": "virada", "inicio": 21.8, "fim": 26, "frases": [
+      [{"id": "continuar", "texto": "Quem continua entende:"},
+       {"id": "investir", "texto": "pra vender, é preciso investir."}]
+    ]},
+    { "cena": "canais", "inicio": 26, "fim": 32.6, "frases": [
+      [{"id": "bni", "texto": "BNI, network,", "fala": "bê éne i, network,"},
+       {"id": "eventos", "texto": "eventos, propaganda, tráfego pago."}],
+      [{"id": "gratis", "texto": "Não existe canal de graça."}]
+    ]},
+    { "cena": "gestao", "inicio": 32.6, "fim": 38.4, "frases": [
+      [{"id": "canal", "texto": "Investir em canal de venda"},
+       {"id": "naoGasto", "texto": "não é gasto."}],
+      [{"id": "investimento", "texto": "É investimento,"},
+       {"id": "retorno", "texto": "e se mede pelo retorno."}]
+    ]},
+    { "cena": "escolha", "inicio": 38.4, "fim": 49.8, "frases": [
+      [{"id": "escolha", "texto": "Aí vem a escolha:"}],
+      [{"id": "vendedor", "texto": "vendedor de alta performance,"},
+       {"id": "autonomia", "texto": "com autonomia e retorno rápido;"}],
+      [{"id": "empresario", "texto": "ou empresário,"},
+       {"id": "escala", "texto": "com estrutura e escala."}],
+      [{"id": "melhor", "texto": "Não existe caminho melhor."},
+       {"id": "certo", "texto": "Existe o certo pra você."}]
+    ]},
+    { "cena": "liberdade", "inicio": 49.8, "fim": 54, "frases": [
+      [{"id": "liberdade", "texto": "Os dois te dão liberdade,"},
+       {"id": "gestaoFinal", "texto": "mas ela depende da sua gestão."}]
+    ]},
+    { "cena": "fechamento", "inicio": 54, "fim": 62, "frases": [
+      [{"id": "manda", "texto": "Manda pra alguém que está começando em vendas,"},
+       {"id": "antes", "texto": "antes que ele desista."}],
+      [{"id": "comenta", "texto": "E comenta:"},
+       {"id": "qual", "texto": "alta performance ou empresário?"}]
+    ]}
+  ]
+}

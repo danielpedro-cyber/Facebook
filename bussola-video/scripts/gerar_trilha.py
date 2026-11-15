@@ -4,7 +4,7 @@ direitos autorais de terceiros — tudo é sintetizado aqui.
 
 Uso:
     .venv/bin/pip install numpy scipy
-    .venv/bin/python scripts/gerar_trilha.py
+    .venv/bin/python scripts/gerar_trilha.py --roteiro scripts/roteiros/completa.json --saida public/trilha-completa.mp3
 
 Requer ffmpeg no PATH. A trilha acompanha as cenas (constantes abaixo):
 fica mais vazia e menor na "baixa", ganha ritmo na virada e cresce até a escolha.
@@ -12,6 +12,8 @@ fica mais vazia e menor na "baixa", ganha ritmo na virada e cresce até a escolh
 
 from __future__ import annotations
 
+import argparse
+import json
 import os
 import subprocess
 import sys
@@ -28,7 +30,7 @@ BPM = 120
 BATIDA = 60 / BPM  # 0,5 s
 COMPASSO = 4 * BATIDA  # 2 s
 
-# Cenas (s) — iguais a CENAS em src/constantes.ts
+# Cenas (s) — lidas do roteiro em main(); os valores abaixo são só o padrão
 BAIXA = (21, 29)
 VIRADA = 29
 RITMO = 35  # entra percussão leve
@@ -103,7 +105,7 @@ def adiciona(buf: np.ndarray, sinal: np.ndarray, inicio: float, ganho: float, pa
 
 def intensidade(t: float) -> float:
     """Curva de energia da música ao longo do vídeo (0–1)."""
-    if t < 8:
+    if t < ABERTURA:
         return 0.55
     if t < BAIXA[0]:
         return 0.7
@@ -120,7 +122,29 @@ def intensidade(t: float) -> float:
     return 0.8
 
 
+def carregar_tempos(caminho: str) -> None:
+    """Ajusta as seções da música aos tempos das cenas do roteiro."""
+    global DURACAO, BAIXA, VIRADA, RITMO, ESCOLHA, LIBERDADE, FINAL, ABERTURA
+    c = {x["cena"]: (x["inicio"], x["fim"]) for x in json.load(open(caminho, encoding="utf-8"))["cenas"]}
+    DURACAO = float(c["fechamento"][1])
+    BAIXA = c["baixa"]
+    VIRADA = c["virada"][0]
+    RITMO = c["canais"][0]
+    ESCOLHA = c["escolha"][0]
+    LIBERDADE = c["liberdade"]
+    FINAL = c["fechamento"][0]
+    ABERTURA = c["promessa"][0]
+
+
+ABERTURA = 8
+
+
 def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--roteiro", default=os.path.join(RAIZ, "scripts", "roteiros", "completa.json"))
+    ap.add_argument("--saida", default=os.path.join(RAIZ, "public", "trilha-completa.mp3"))
+    a = ap.parse_args()
+    carregar_tempos(a.roteiro)
     rng = np.random.default_rng(7)
     n = int(DURACAO * SR)
     pad = np.zeros((2, n))
@@ -143,7 +167,7 @@ def main() -> int:
             adiciona(pad, s * env_adsr(len(s), 0.5, 0.6), t0, 0.05)
 
         # baixo
-        if t0 >= 8:
+        if t0 >= ABERTURA:
             s = tom(hz(baixo), COMPASSO, (1.0, 0.25))
             s *= np.exp(-np.arange(len(s)) / SR / 1.2) * env_adsr(len(s), 0.01, 0.1)
             adiciona(graves, s, t0, 0.16 * e)
@@ -151,7 +175,7 @@ def main() -> int:
         # arpejo (piano elétrico suave) — some na baixa, volta na virada
         if not triste:
             for k, idx in enumerate(padrao_arpejo):
-                if t0 < 8 and k % 2:  # abertura mais espaçada
+                if t0 < ABERTURA and k % 2:  # abertura mais espaçada
                     continue
                 oitava = 12 if (c % 2 and k >= 4 and t0 >= VIRADA) else 0
                 adiciona(arpejo, pluck(hz(notas[idx] + oitava)), t0 + k * BATIDA / 2, 0.11 * e, pan=-0.35 if k % 2 else 0.35)
@@ -193,7 +217,7 @@ def main() -> int:
     mix[:, -fade_out:] *= np.linspace(1, 0, fade_out)
     mix /= np.abs(mix).max() / 0.9
 
-    saida = os.path.join(RAIZ, "public", "trilha.mp3")
+    saida = a.saida
     with tempfile.TemporaryDirectory() as tmp:
         wav = os.path.join(tmp, "trilha.wav")
         with wave.open(wav, "wb") as w:

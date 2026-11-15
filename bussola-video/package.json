@@ -6,6 +6,10 @@
   "scripts": {
     "dev": "remotion studio",
     "render": "remotion render Bussola out/bussola.mp4",
+    "render:curta-a": "REMOTION_VERSAO=curta-a remotion render Bussola out/bussola-curta-a.mp4",
+    "render:curta-b": "REMOTION_VERSAO=curta-b remotion render Bussola out/bussola-curta-b.mp4",
+    "render:curta-c": "REMOTION_VERSAO=curta-c remotion render Bussola out/bussola-curta-c.mp4",
+    "render:todas": "npm run render && npm run render:curta-a && npm run render:curta-b && npm run render:curta-c",
     "still": "remotion still Bussola out/frame.png"
   },
   "dependencies": {

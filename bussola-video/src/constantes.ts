@@ -1,4 +1,6 @@
-import { LEGENDAS } from './legendas';
+import { VERSAO } from './versoes';
+
+const LEGENDAS = VERSAO.legendas;
 
 // =============================================================================
 // Bússola — constantes do vídeo
@@ -10,7 +12,7 @@ export const VIDEO = {
   largura: 1080,
   altura: 1920,
   fps: 30,
-  duracaoSeg: 78,
+  duracaoSeg: VERSAO.cenas.fechamento.fim,
 };
 
 /** Converte segundos em quadros. */
@@ -73,18 +75,7 @@ export const LAYOUT = {
 // -----------------------------------------------------------------------------
 // Cenas (início e fim em segundos)
 // -----------------------------------------------------------------------------
-export const CENAS = {
-  gancho: { inicio: 0, fim: 8 },
-  promessa: { inicio: 8, fim: 13 },
-  mercadoQuente: { inicio: 13, fim: 21 },
-  baixa: { inicio: 21, fim: 29 },
-  virada: { inicio: 29, fim: 35 },
-  canais: { inicio: 35, fim: 42 },
-  gestao: { inicio: 42, fim: 50 },
-  escolha: { inicio: 50, fim: 64 },
-  liberdade: { inicio: 64, fim: 69 },
-  fechamento: { inicio: 69, fim: 78 },
-} as const;
+export const CENAS = VERSAO.cenas;
 
 export type NomeCena = keyof typeof CENAS;
 
@@ -104,7 +95,7 @@ export const PARADAS: { numero: number; titulo: string; cena: NomeCena }[] = [
 ];
 
 // -----------------------------------------------------------------------------
-// Legendas (sincronizadas com a narração) — ficam em src/legendas.ts,
+// Legendas (sincronizadas com a narração) — ficam em src/legendas/<versão>.ts,
 // gerado por scripts/gerar_narracao.py. Cada legenda fica na tela até a
 // próxima começar, então sempre há texto.
 // -----------------------------------------------------------------------------
@@ -114,11 +105,18 @@ export { LEGENDAS };
  * Momento (em segundos, relativo ao início da `cena`) em que um trecho da
  * narração é falado. `fracao` = 0 no começo do trecho, 1 no fim.
  * As animações usam isso para acompanhar a fala: se trocar a narração,
- * basta atualizar src/legendas.ts.
+ * basta atualizar src/legendas/<versão>.ts.
  */
+/** A narração desta versão tem o trecho `id`? */
+export const temLegenda = (id: string) => LEGENDAS.some((x) => x.id === id);
+
+/** Como momento(), mas devolve `padrao` (s, relativo à cena) se o trecho não existir nesta versão. */
+export const momentoOu = (cena: NomeCena, id: string, padrao: number, fracao = 0): number =>
+  temLegenda(id) ? momento(cena, id, fracao) : padrao;
+
 export const momento = (cena: NomeCena, id: string, fracao = 0): number => {
   const l = LEGENDAS.find((x) => x.id === id);
-  if (!l) throw new Error(`Legenda "${id}" não encontrada em src/legendas.ts`);
+  if (!l) throw new Error(`Legenda "${id}" não encontrada nas legendas desta versão`);
   return l.inicio + (l.fim - l.inicio) * fracao - CENAS[cena].inicio;
 };
 
@@ -127,10 +125,7 @@ export const momento = (cena: NomeCena, id: string, fracao = 0): number => {
 // -----------------------------------------------------------------------------
 export const TEXTOS = {
   serie: 'Bússola #1', // marca da série (episódio)
-  gancho: {
-    pergunta: 'Por que a maioria dos vendedores desiste?', // 1º quadro = capa (menos de 10 palavras)
-    destaque: 'desiste?',
-  },
+  gancho: VERSAO.gancho, // 1º quadro = capa (definido por versão em src/versoes.ts)
   promessa: { linha1: 'Fica até o final:', destaque: '2 caminhos', linha2: 'pra sair dessa.' },
   virada: { antes: 'Pra continuar vendendo, é preciso ', destaque: 'investir.' },
   canais: ['BNI e network', 'Educação e eventos', 'Propaganda e conteúdo', 'Tráfego pago'],
@@ -169,8 +164,8 @@ export const TEXTOS = {
 export const LOGO_ARQUIVO: string | null = 'logo-bussola.png';
 
 export const AUDIO = {
-  narracao: 'narracao.mp3',
-  trilha: 'trilha.mp3',
+  narracao: VERSAO.narracao,
+  trilha: VERSAO.trilha,
   volumeNarracao: 1,
   volumeTrilhaComNarracao: 0.11, // trilha abaixa sozinha enquanto a voz fala (ducking)
   volumeTrilhaEntreFrases: 0.22,

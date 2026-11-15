@@ -73,6 +73,7 @@ const vozAtiva = (tSeg: number) => {
 
 const existe = (arquivo: string) => getStaticFiles().some((f) => f.name === arquivo);
 
+
 /** Narração + trilha. Se um arquivo não existir em /public, ele é ignorado. */
 const TrilhaSonora: React.FC = () => {
   const temNarracao = existe(AUDIO.narracao);

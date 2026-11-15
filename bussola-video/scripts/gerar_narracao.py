@@ -1,6 +1,6 @@
 """
 Gera a narração (public/narracao.mp3) com voz neural local (Piper) e
-calcula os tempos das legendas a partir da fala real (src/legendas.ts).
+calcula os tempos das legendas a partir da fala real (src/legendas/<versão>.ts).
 
 Uso (uma vez):
     python -m venv .venv && .venv/bin/pip install piper-tts==1.8.0 numpy
@@ -14,7 +14,7 @@ Uso (uma vez):
 
 Requer ffmpeg no PATH.
 
-Como funciona: cada frase do roteiro.json é sintetizada inteira (entonação
+Como funciona: cada frase do roteiro (scripts/roteiros/*.json) é sintetizada inteira (entonação
 natural), os silêncios das pontas são cortados e as frases são distribuídas
 dentro do tempo da cena. Se uma cena não couber, a fala daquela cena é
 acelerada. O início de cada trecho de legenda é estimado pela proporção de
@@ -108,9 +108,9 @@ def n_fonemas(voz: PiperVoice, texto: str) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--voz", default=os.path.join(RAIZ, "scripts", "voz", "pt_BR-faber-medium.onnx"))
-    ap.add_argument("--roteiro", default=os.path.join(RAIZ, "scripts", "roteiro.json"))
-    ap.add_argument("--saida", default=os.path.join(RAIZ, "public", "narracao.mp3"))
-    ap.add_argument("--legendas", default=os.path.join(RAIZ, "src", "legendas.ts"))
+    ap.add_argument("--roteiro", default=os.path.join(RAIZ, "scripts", "roteiros", "completa.json"))
+    ap.add_argument("--saida", default=os.path.join(RAIZ, "public", "narracao-completa.mp3"))
+    ap.add_argument("--legendas", default=os.path.join(RAIZ, "src", "legendas", "completa.ts"))
     ap.add_argument("--conferir", type=int, default=0, metavar="N",
                     help="gera N versões de cada frase e escolhe a mais clara (requer faster-whisper)")
     a = ap.parse_args()
@@ -173,7 +173,7 @@ def main() -> int:
         )
 
     linhas = [
-        "// Gerado por scripts/gerar_narracao.py a partir de scripts/roteiro.json.",
+        f"// Gerado por scripts/gerar_narracao.py a partir de {os.path.relpath(a.roteiro, RAIZ)}.",
         "// Ao trocar a narração por uma gravação real, ajuste 'inicio' e 'fim' (segundos).",
         "// 'inicio' = quando a legenda entra; 'fim' = quando aquele trecho termina de ser falado.",
         "export const LEGENDAS: { id: string; inicio: number; fim: number; texto: string }[] = [",

@@ -19,6 +19,17 @@ npm run dev
 npm run render
 ```
 
+### Versões
+
+| Versão | Duração | Gancho | Comando |
+|---|---|---|---|
+| `completa` | 78 s | "Por que a maioria dos vendedores desiste?" + "Se as suas vendas caíram…" | `npm run render` |
+| `curta-a` | 62 s | A — pergunta: "Por que a maioria dos vendedores desiste?" | `npm run render:curta-a` |
+| `curta-b` | 62 s | B — segredo: "Ninguém te conta isso quando você começa a vender." | `npm run render:curta-b` |
+| `curta-c` | 62 s | C — dor direta: "Suas vendas caíram depois que você ofereceu pra todo mundo que conhece?" | `npm run render:curta-c` |
+
+`npm run render:todas` gera as quatro. As curtas só mudam o gancho, para testar qual segura mais gente (por exemplo, com os Reels de teste do Instagram, que mostram o vídeo primeiro para quem não te segue). As versões ficam em `src/versoes.ts`; a variável `REMOTION_VERSAO` escolhe qual renderizar.
+
 O comando de renderização equivale a:
 
 ```bash
@@ -36,7 +47,8 @@ Quase tudo fica em **`src/constantes.ts`**:
 | Cores, fontes e tamanhos | `CORES`, `FONTE` |
 | Início e fim de cada cena (segundos) | `CENAS` |
 | Paradas numeradas da rota | `PARADAS` |
-| Legendas e seus tempos | `src/legendas.ts` (gerado pela narração) |
+| Versões (tempos das cenas, gancho, áudios) | `src/versoes.ts` |
+| Legendas e seus tempos | `src/legendas/<versão>.ts` (gerado pela narração) |
 | Textos das cenas | `TEXTOS` |
 | Logo | `LOGO_ARQUIVO` |
 | Volumes de narração e trilha | `AUDIO` |
@@ -54,10 +66,10 @@ A logo d'A Bússola do Consórcio está em `public/logo-bussola.png` (recortada 
 
 O vídeo já sai com narração e trilha, geradas localmente por dois scripts (sem serviços externos e sem direitos autorais de terceiros):
 
-- **`public/narracao.mp3`**: voz neural em português (Piper, voz *Faber*, licença CC0), gerada a partir de `scripts/roteiro.json` por `scripts/gerar_narracao.py`. O script também grava **`src/legendas.ts`** com o tempo real de cada trecho. As animações usam esses tempos (função `momento()` em `constantes.ts`), então texto, legenda e voz andam juntos.
-- **`public/trilha.mp3`**: trilha instrumental leve composta por `scripts/gerar_trilha.py`. Ela fica mais vazia na cena da baixa, ganha ritmo a partir dos canais e fecha num acorde final.
+- **`public/narracao-<versão>.mp3`**: voz neural em português (Piper, voz *Faber*, licença CC0), gerada a partir de `scripts/roteiros/<versão>.json` por `scripts/gerar_narracao.py`. O script também grava **`src/legendas/<versão>.ts`** com o tempo real de cada trecho. As animações usam esses tempos (função `momento()` em `constantes.ts`), então texto, legenda e voz andam juntos.
+- **`public/trilha-completa.mp3`** e **`trilha-curta.mp3`**: trilha instrumental leve composta por `scripts/gerar_trilha.py`, que lê os tempos das cenas do roteiro. Ela fica mais vazia na cena da baixa, ganha ritmo a partir dos canais e fecha num acorde final.
 
-A trilha toca baixa sob a voz (`AUDIO.volumeTrilhaComNarracao`), com fade de entrada e saída. Se `narracao.mp3` não existir, o vídeo funciona só com legendas e a trilha sobe para `volumeTrilhaSemNarracao`.
+A trilha toca baixa sob a voz (`AUDIO.volumeTrilhaComNarracao`), com fade de entrada e saída. Se o arquivo de narração não existir, o vídeo funciona só com legendas e a trilha sobe para `volumeTrilhaSemNarracao`.
 
 ### Regerar ou mudar o texto falado
 
@@ -69,19 +81,23 @@ curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/faber
 curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/faber/medium/pt_BR-faber-medium.onnx.json
 cd ../..
 
-.venv/bin/python scripts/gerar_narracao.py --conferir 8   # narração + src/legendas.ts
-.venv/bin/python scripts/gerar_trilha.py                  # trilha
+.venv/bin/python scripts/gerar_narracao.py --conferir 8   # versão completa: narração + legendas
+.venv/bin/python scripts/gerar_trilha.py                  # trilha da versão completa
+# versões curtas (exemplo: curta-b)
+.venv/bin/python scripts/gerar_narracao.py --conferir 8 --roteiro scripts/roteiros/curta-b.json \
+    --saida public/narracao-curta-b.mp3 --legendas src/legendas/curta-b.ts
+.venv/bin/python scripts/gerar_trilha.py --roteiro scripts/roteiros/curta-a.json --saida public/trilha-curta.mp3
 .venv/bin/python scripts/gerar_efeitos.py                 # efeitos sonoros (public/sfx)
 npm run render
 ```
 
-- Em `roteiro.json`, `texto` é a legenda e `fala` (opcional) muda só a pronúncia. Por exemplo, "BNI" é falado como "bê éne i".
+- Em `scripts/roteiros/<versão>.json`, `texto` é a legenda e `fala` (opcional) muda só a pronúncia. Por exemplo, "BNI" é falado como "bê éne i".
 - `--conferir 8` gera 8 versões de cada frase e escolhe a mais clara, conferindo com reconhecimento de fala (Whisper). Sem essa opção, o script não precisa do `faster-whisper`.
 - Se uma cena não couber no tempo, a fala dela é acelerada um pouco. Hoje só o gancho é acelerado, cerca de 7%.
 
 ### Usar uma gravação de voz real
 
-Substitua `public/narracao.mp3` pela gravação e ajuste `inicio` e `fim` de cada trecho em `src/legendas.ts`. No Remotion Studio (`npm run dev`) dá para ver a forma de onda e o tempo exato de cada frase. As animações acompanham sozinhas.
+Substitua `public/narracao-<versão>.mp3` pela gravação e ajuste `inicio` e `fim` de cada trecho em `src/legendas/<versão>.ts`. No Remotion Studio (`npm run dev`) dá para ver a forma de onda e o tempo exato de cada frase. As animações acompanham sozinhas.
 
 ## Edição e retenção
 

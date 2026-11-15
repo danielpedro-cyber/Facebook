@@ -6,7 +6,7 @@ import { ENTRA_INVESTIMENTO, RISCA_GASTO } from './cenas/Cena6Gestao';
 import { MOMENTOS_ITENS } from './cenas/Cena7Escolha';
 import { ENTRA_COMENTA, ENTRA_ENVIO, ENTRA_LOGO } from './cenas/Cena9Fechamento';
 import { ACENDE_LAMPADA } from './cenas/Cena4Virada';
-import { TOQUE_INICIO } from './cenas/Cena3Baixa';
+import { TEM_TOQUE, TOQUE_INICIO } from './cenas/Cena3Baixa';
 
 export type Efeito = { arquivo: string; em: number; volume?: number };
 
@@ -21,7 +21,7 @@ export const EFEITOS: Efeito[] = [
   // contatos aparecendo
   ...[0.12, 0.38, 0.68].map((f) => ({ arquivo: 'pop', em: abs('mercadoQuente', momento('mercadoQuente', 'familia', f)), volume: 0.5 })),
   // celular tocando antes de "o telefone para de tocar"
-  { arquivo: 'toque', em: abs('baixa', TOQUE_INICIO), volume: 0.4 },
+  ...(TEM_TOQUE ? [{ arquivo: 'toque', em: abs('baixa', TOQUE_INICIO), volume: 0.4 }] : []),
   // lâmpada acende
   { arquivo: 'ding', em: abs('virada', ACENDE_LAMPADA), volume: 0.5 },
   // canais entrando
