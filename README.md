@@ -117,6 +117,40 @@ Recomendações personalizadas baseadas nos padrões da sua conta:
 
 ---
 
+## Editor de vídeo (linha de comando)
+
+`video_editor.py` cria vídeos para anúncios a partir de imagens: slideshow com transições, zoom (Ken Burns), efeitos de cor, legendas e trilha sonora. Usa o **FFmpeg** instalado no sistema (não precisa de pacotes Python extras).
+
+```bash
+# Instale o FFmpeg: https://ffmpeg.org/download.html  (Ubuntu: sudo apt install ffmpeg)
+
+# Vídeo quadrado para o feed, 3s por imagem, transição fade
+python video_editor.py fotos/*.jpg -o anuncio.mp4
+
+# Reels/Stories 9:16 com zoom, música, legendas e efeito vintage
+python video_editor.py a.jpg b.jpg c.jpg -o reels.mp4 --formato stories --zoom \
+    --audio musica.mp3 --repetir-audio --fade-out 2 -e vintage \
+    --legenda "0-3:Oferta por tempo limitado" --legenda "3-7:Chame no\nWhatsApp"
+
+# Ver todas as opções
+python video_editor.py --help
+```
+
+| Opção | Descrição |
+|-------|-----------|
+| `-f, --formato` | `feed` (1080x1080), `vertical` (1080x1350), `stories` (1080x1920), `paisagem` (1920x1080), `hd` ou `LARGURAxALTURA` |
+| `-d, --duracao` | Segundos por imagem (padrão 3) |
+| `-t, --transicao` | `fade`, `dissolver`, `preto`, `branco`, `deslizar-esquerda`, `cortina-direita`, `circulo`, `radial`, `pixelizar`, `zoom`, `nenhuma`... |
+| `-z, --zoom` | Zoom suave (Ken Burns) |
+| `--preencher` | Corta a imagem para preencher a tela em vez de usar bordas |
+| `-e, --efeito` | `pb`, `sepia`, `vintage`, `brilho`, `contraste`, `saturacao`, `desfoque`, `vinheta` (pode repetir; `--intensidade 0-100`) |
+| `-a, --audio` | Trilha sonora (`--volume`, `--fade-in`, `--fade-out`, `--repetir-audio`) |
+| `-l, --legenda` | `"INICIO-FIM:texto"` (pode repetir) ou `--srt arquivo.srt` |
+| `-o, --saida` | `.mp4` (H.264/AAC) ou `.webm` (VP9/Opus) |
+| `--simular` | Só mostra o comando FFmpeg gerado |
+
+---
+
 ## Estrutura do projeto
 
 ```
@@ -125,6 +159,7 @@ Facebook/
 ├── facebook_connector.py    # Conexão com a Meta Ads API
 ├── lead_suggestions.py      # Ranking e gerador de sugestões de leads
 ├── paid_traffic_metrics.py  # Benchmarks e avaliação de métricas
+├── video_editor.py          # Editor de vídeo (slideshow) via FFmpeg
 ├── requirements.txt         # Dependências Python
 ├── .env.example             # Modelo de configuração
 └── .env                     # Suas credenciais (não commitado)
