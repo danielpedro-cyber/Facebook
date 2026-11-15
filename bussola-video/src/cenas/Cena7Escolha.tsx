@@ -1,5 +1,5 @@
 import React from 'react';
-import { CORES, TEXTOS } from '../constantes';
+import { CORES, TEXTOS, momento } from '../constantes';
 import { Palco, SeloIcone } from '../componentes/Base';
 import { IconeCheck, IconeEmpresa, IconeVendedor } from '../componentes/Icones';
 import { useCrescer, useEntrada, useProgresso } from '../componentes/animacoes';
@@ -8,12 +8,13 @@ import { useCrescer, useEntrada, useProgresso } from '../componentes/animacoes';
 // Os dois cartões usam o MESMO componente, mesmas cores, tamanhos e tempos:
 // nenhum caminho pode parecer superior. Os itens aparecem em pares (linha a linha).
 const LARGURA_CARTAO = 466;
-const ITENS_INICIO = 2.0; // s, relativo à cena
-const ITENS_PASSO = 1.5;
+// Os 5 pares de itens se distribuem enquanto a narração descreve os dois caminhos.
+const ITENS_INICIO = momento('escolha', 'vendedor');
+const ITENS_PASSO = (momento('escolha', 'escala', 1) - ITENS_INICIO) / 5;
 
 const Bifurcacao: React.FC = () => {
   const p = useProgresso(0.3, 1.3);
-  const igual = useCrescer(14.8);
+  const igual = useCrescer(momento('escolha', 'melhor'));
   const esq = LARGURA_CARTAO / 2;
   const dir = 960 - LARGURA_CARTAO / 2;
   const comum = { stroke: CORES.royal, strokeWidth: 14, fill: 'none', strokeLinecap: 'round' as const, pathLength: 1, strokeDasharray: 1, strokeDashoffset: 1 - p };

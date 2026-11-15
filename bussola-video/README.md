@@ -34,7 +34,7 @@ Quase tudo fica em **`src/constantes.ts`**:
 | Cores, fontes e tamanhos | `CORES`, `FONTE` |
 | Início e fim de cada cena (segundos) | `CENAS` |
 | Paradas numeradas da rota | `PARADAS` |
-| Legendas e seus tempos | `LEGENDAS` |
+| Legendas e seus tempos | `src/legendas.ts` (gerado pela narração) |
 | Textos das cenas | `TEXTOS` |
 | Logo | `LOGO_ARQUIVO` |
 | Volumes de narração e trilha | `AUDIO` |
@@ -53,10 +53,35 @@ Enquanto for `null`, aparece o placeholder em texto "Bússola".
 
 ## Áudio
 
-- `public/narracao.mp3` e `public/trilha.mp3` são **placeholders em silêncio** de 90 s. Substitua pelos arquivos reais com os mesmos nomes.
-- A trilha toca baixa sob a narração (`volumeTrilhaComNarracao`), com fade de entrada e saída, e se repete se for mais curta que o vídeo.
-- Se você apagar `narracao.mp3`, o vídeo funciona só com legendas e a trilha sobe para `volumeTrilhaSemNarracao`.
-- Com a narração real, ajuste os tempos de `LEGENDAS` (campo `inicio`) para casar com a fala. No Remotion Studio dá para ver a forma de onda e o tempo exato de cada frase.
+O vídeo já sai com narração e trilha, geradas localmente por dois scripts (sem serviços externos e sem direitos autorais de terceiros):
+
+- **`public/narracao.mp3`**: voz neural em português (Piper, voz *Faber*, licença CC0), gerada a partir de `scripts/roteiro.json` por `scripts/gerar_narracao.py`. O script também grava **`src/legendas.ts`** com o tempo real de cada trecho. As animações usam esses tempos (função `momento()` em `constantes.ts`), então texto, legenda e voz andam juntos.
+- **`public/trilha.mp3`**: trilha instrumental leve composta por `scripts/gerar_trilha.py`. Ela fica mais vazia na cena da baixa, ganha ritmo a partir dos canais e fecha num acorde final.
+
+A trilha toca baixa sob a voz (`AUDIO.volumeTrilhaComNarracao`), com fade de entrada e saída. Se `narracao.mp3` não existir, o vídeo funciona só com legendas e a trilha sobe para `volumeTrilhaSemNarracao`.
+
+### Regerar ou mudar o texto falado
+
+```bash
+python -m venv .venv
+.venv/bin/pip install piper-tts==1.8.0 numpy scipy faster-whisper
+mkdir -p scripts/voz && cd scripts/voz
+curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/faber/medium/pt_BR-faber-medium.onnx
+curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/faber/medium/pt_BR-faber-medium.onnx.json
+cd ../..
+
+.venv/bin/python scripts/gerar_narracao.py --conferir 8   # narração + src/legendas.ts
+.venv/bin/python scripts/gerar_trilha.py                  # trilha
+npm run render
+```
+
+- Em `roteiro.json`, `texto` é a legenda e `fala` (opcional) muda só a pronúncia. Por exemplo, "BNI" é falado como "bê éne i".
+- `--conferir 8` gera 8 versões de cada frase e escolhe a mais clara, conferindo com reconhecimento de fala (Whisper). Sem essa opção, o script não precisa do `faster-whisper`.
+- Se uma cena não couber no tempo, a fala dela é acelerada um pouco. Hoje só a cena 6 é acelerada, cerca de 9%.
+
+### Usar uma gravação de voz real
+
+Substitua `public/narracao.mp3` pela gravação e ajuste `inicio` e `fim` de cada trecho em `src/legendas.ts`. No Remotion Studio (`npm run dev`) dá para ver a forma de onda e o tempo exato de cada frase. As animações acompanham sozinhas.
 
 ## Regras de layout seguidas
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { interpolate, useCurrentFrame } from 'remotion';
-import { CORES, FONTE, s } from '../constantes';
+import { CORES, FONTE, momento, s } from '../constantes';
 import { Palco, SeloIcone, Titulo } from '../componentes/Base';
 import { IconeCelular, IconeSinoMudo } from '../componentes/Icones';
 import { useCrescer, useEntrada, useProgresso } from '../componentes/animacoes';
@@ -8,19 +8,21 @@ import { useCrescer, useEntrada, useProgresso } from '../componentes/animacoes';
 // CENA 3 — a baixa (15 a 24 s). Único lugar com vermelho suave.
 const ALTURAS_ANTES = [0.9, 0.95, 0.85, 0.9, 0.8];
 const ALTURAS_DEPOIS = [0.9, 0.72, 0.5, 0.3, 0.14];
+const SILENCIO = momento('baixa', 'telefone', 0.7); // "o telefone para de tocar"
+const QUEDA = momento('baixa', 'vendasCaem'); // "e as vendas caem"
 
 const Celular: React.FC = () => {
   const frame = useCurrentFrame();
   const entrada = useCrescer(0.1);
-  // vibra no começo e para quando "o telefone para de tocar" (~2 s)
-  const vibrando = frame < s(1.9);
+  // vibra até "o telefone para de tocar"
+  const vibrando = frame < s(SILENCIO);
   const tremor = vibrando ? Math.sin(frame * 1.9) * 4 : 0;
-  const ondas = interpolate(frame, [s(1.5), s(2.0)], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
-  const sino = useCrescer(2.1);
+  const ondas = interpolate(frame, [s(SILENCIO - 0.4), s(SILENCIO)], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const sino = useCrescer(SILENCIO + 0.1);
   return (
     <div style={{ position: 'relative', width: 340, height: 420, ...entrada }}>
       <div style={{ position: 'absolute', left: 60, top: 40, transform: `rotate(${tremor}deg)` }}>
-        <IconeCelular tamanho={240} espessura={2.6} cor={frame > s(2) ? CORES.cinza : CORES.marinho} />
+        <IconeCelular tamanho={240} espessura={2.6} cor={frame > s(SILENCIO) ? CORES.cinza : CORES.marinho} />
       </div>
       <svg width={340} height={420} style={{ position: 'absolute', inset: 0, opacity: ondas }}>
         {[0, 1].map((i) => (
@@ -41,8 +43,8 @@ const Celular: React.FC = () => {
 
 const Grafico: React.FC = () => {
   const entrada = useProgresso(0.3, 1.0);
-  const queda = useProgresso(3.8, 1.6);
-  const seta = useProgresso(4.6, 0.9);
+  const queda = useProgresso(QUEDA, 1.6);
+  const seta = useProgresso(QUEDA + 0.8, 0.9);
   const L = 440;
   const H = 360;
   const larg = 58;
@@ -84,7 +86,7 @@ const Grafico: React.FC = () => {
 
 export const Cena3Baixa: React.FC = () => {
   const titulo = useEntrada(0.2);
-  const desiste = useEntrada(5.7);
+  const desiste = useEntrada(momento('baixa', 'desiste'));
   return (
     <Palco style={{ justifyContent: 'space-between', paddingTop: 10, paddingBottom: 10 }}>
       <Titulo style={titulo}>A lista acaba.</Titulo>

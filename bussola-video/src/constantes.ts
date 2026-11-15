@@ -1,3 +1,5 @@
+import { LEGENDAS } from './legendas';
+
 // =============================================================================
 // Bússola — constantes do vídeo
 // Ajuste aqui cores, fontes, tamanhos, tempos das cenas e legendas.
@@ -91,54 +93,23 @@ export const PARADAS: { numero: number; titulo: string; cena: NomeCena }[] = [
 ];
 
 // -----------------------------------------------------------------------------
-// Legendas (sincronizadas com a narração).
-// Cada legenda fica na tela até a próxima começar, então sempre há texto.
-// Ao trocar a narração, ajuste só os tempos de "inicio".
+// Legendas (sincronizadas com a narração) — ficam em src/legendas.ts,
+// gerado por scripts/gerar_narracao.py. Cada legenda fica na tela até a
+// próxima começar, então sempre há texto.
 // -----------------------------------------------------------------------------
-export const LEGENDAS: { inicio: number; texto: string }[] = [
-  // Cena 1
-  { inicio: 0, texto: 'Toda carreira em vendas começa do mesmo jeito.' },
-  // Cena 2
-  { inicio: 5.2, texto: 'Você oferece pra família,' },
-  { inicio: 7.2, texto: 'pros amigos, pro pessoal do antigo trabalho.' },
-  { inicio: 10.6, texto: 'Não custa dinheiro,' },
-  { inicio: 12.4, texto: 'mas exige coragem.' },
-  // Cena 3
-  { inicio: 15.2, texto: 'Até que a lista acaba.' },
-  { inicio: 17.0, texto: 'O telefone para de tocar' },
-  { inicio: 18.9, texto: 'e as vendas caem.' },
-  { inicio: 20.7, texto: 'É aqui que a maioria desiste.' },
-  // Cena 4
-  { inicio: 24.2, texto: 'Mas quem quer continuar entende:' },
-  { inicio: 27.0, texto: 'daqui pra frente, pra vender,' },
-  { inicio: 29.3, texto: 'é preciso investir.' },
-  // Cena 5
-  { inicio: 32.2, texto: 'BNI, network,' },
-  { inicio: 34.0, texto: 'grupos de educação,' },
-  { inicio: 35.9, texto: 'propaganda, tráfego pago.' },
-  { inicio: 38.6, texto: 'Não existe canal de graça.' },
-  // Cena 6
-  { inicio: 42.2, texto: 'A pergunta é: quanto eu invisto,' },
-  { inicio: 44.4, texto: 'e quanto isso me devolve?' },
-  { inicio: 46.0, texto: 'Gastar sem medir é despesa.' },
-  { inicio: 48.0, texto: 'Gastar medindo é investimento.' },
-  // Cena 7
-  { inicio: 50.3, texto: 'Aí vem a escolha.' },
-  { inicio: 52.0, texto: 'O vendedor de alta performance' },
-  { inicio: 54.0, texto: 'tem autonomia, margem,' },
-  { inicio: 55.9, texto: 'simplicidade e retorno rápido:' },
-  { inicio: 58.0, texto: 'tudo que entra é dele.' },
-  { inicio: 60.0, texto: 'O empresário investe em estrutura e pessoas' },
-  { inicio: 62.8, texto: 'e ganha escala com o time.' },
-  { inicio: 64.8, texto: 'Não existe caminho melhor.' },
-  { inicio: 67.0, texto: 'Existe o caminho certo pra você.' },
-  // Cena 8
-  { inicio: 70.3, texto: 'Os dois caminhos te dão liberdade.' },
-  { inicio: 74.0, texto: 'Mas ela depende da sua gestão.' },
-  // Cena 9
-  { inicio: 80.3, texto: 'Qual caminho você vai escolher?' },
-  { inicio: 84.0, texto: 'Comenta aqui.' },
-];
+export { LEGENDAS };
+
+/**
+ * Momento (em segundos, relativo ao início da `cena`) em que um trecho da
+ * narração é falado. `fracao` = 0 no começo do trecho, 1 no fim.
+ * As animações usam isso para acompanhar a fala: se trocar a narração,
+ * basta atualizar src/legendas.ts.
+ */
+export const momento = (cena: NomeCena, id: string, fracao = 0): number => {
+  const l = LEGENDAS.find((x) => x.id === id);
+  if (!l) throw new Error(`Legenda "${id}" não encontrada em src/legendas.ts`);
+  return l.inicio + (l.fim - l.inicio) * fracao - CENAS[cena].inicio;
+};
 
 // -----------------------------------------------------------------------------
 // Conteúdo das cenas
@@ -188,7 +159,7 @@ export const AUDIO = {
   narracao: 'narracao.mp3',
   trilha: 'trilha.mp3',
   volumeNarracao: 1,
-  volumeTrilhaComNarracao: 0.12, // trilha baixinha por baixo da voz
+  volumeTrilhaComNarracao: 0.16, // trilha baixinha por baixo da voz
   volumeTrilhaSemNarracao: 0.3,
   fadeTrilhaSeg: 1.5,
 };

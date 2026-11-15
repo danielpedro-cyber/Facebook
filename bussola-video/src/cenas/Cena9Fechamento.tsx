@@ -1,5 +1,5 @@
 import React from 'react';
-import { CORES, FONTE, TEXTOS } from '../constantes';
+import { CORES, FONTE, TEXTOS, momento } from '../constantes';
 import { Logo, Palco, Titulo } from '../componentes/Base';
 import { IconeComentario } from '../componentes/Icones';
 import { useCrescer, useEntrada } from '../componentes/animacoes';
@@ -7,8 +7,8 @@ import { useCrescer, useEntrada } from '../componentes/animacoes';
 // CENA 9 — fechamento (80 a 90 s): pergunta, logo e chamada para comentar.
 export const Cena9Fechamento: React.FC = () => {
   const pergunta = useEntrada(0.2);
-  const logo = useCrescer(2.2);
-  const cta = useEntrada(3.8, 80);
+  const logo = useCrescer(momento('fechamento', 'pergunta', 1) + 0.2);
+  const cta = useEntrada(momento('fechamento', 'comenta'), 80);
   return (
     <Palco style={{ gap: 56 }}>
       <Titulo style={pergunta}>{TEXTOS.fechamento.pergunta}</Titulo>

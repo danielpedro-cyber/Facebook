@@ -1,12 +1,17 @@
 import React from 'react';
-import { CORES, FONTE, TEXTOS } from '../constantes';
+import { CORES, FONTE, TEXTOS, momento } from '../constantes';
 import { Palco, SeloIcone, Titulo } from '../componentes/Base';
 import { IconeAlvo, IconeCapelo, IconeMegafone, IconeRede } from '../componentes/Icones';
 import { useCrescer, useEntrada } from '../componentes/animacoes';
 
 // CENA 5 — canais (32 a 42 s). Cartões entram um a um, junto com a narração.
 const ICONES = [IconeRede, IconeCapelo, IconeMegafone, IconeAlvo];
-const ATRASOS = [0.2, 2.0, 3.9, 5.0];
+const ATRASOS = [
+  momento('canais', 'bni'),
+  momento('canais', 'educacao'),
+  momento('canais', 'propaganda'),
+  momento('canais', 'propaganda', 0.5), // "tráfego pago"
+];
 
 const Cartao: React.FC<{ indice: number }> = ({ indice }) => {
   const Icone = ICONES[indice];
@@ -37,7 +42,7 @@ const Cartao: React.FC<{ indice: number }> = ({ indice }) => {
 };
 
 export const Cena5Canais: React.FC = () => {
-  const rodape = useEntrada(6.6);
+  const rodape = useEntrada(momento('canais', 'gratis'));
   return (
     <Palco style={{ gap: 22 }}>
       {TEXTOS.canais.map((_, i) => (

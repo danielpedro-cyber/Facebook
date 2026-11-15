@@ -1,14 +1,15 @@
 import React from 'react';
-import { CORES, FONTE } from '../constantes';
+import { CORES, FONTE, momento } from '../constantes';
 import { Palco, SeloIcone } from '../componentes/Base';
 import { IconeAmigos, IconeCelular, IconeFamilia, IconeMaleta } from '../componentes/Icones';
 import { useCrescer, useEntrada, useProgresso } from '../componentes/animacoes';
 
-// CENA 2 — mercado quente (5 a 15 s). Tempos relativos ao início da cena.
+// CENA 2 — mercado quente (5 a 15 s). Tempos relativos ao início da cena,
+// presos à narração com momento().
 const CONTATOS = [
-  { rotulo: 'Família', Icone: IconeFamilia, x: 160, y: 120, atraso: 0.5 },
-  { rotulo: 'Amigos', Icone: IconeAmigos, x: 800, y: 120, atraso: 2.3 },
-  { rotulo: 'Ex-trabalho', Icone: IconeMaleta, x: 480, y: 440, atraso: 3.6 },
+  { rotulo: 'Família', Icone: IconeFamilia, x: 160, y: 120, atraso: momento('mercadoQuente', 'familia', 0.55) },
+  { rotulo: 'Amigos', Icone: IconeAmigos, x: 800, y: 120, atraso: momento('mercadoQuente', 'amigos', 0.05) },
+  { rotulo: 'Ex-trabalho', Icone: IconeMaleta, x: 480, y: 440, atraso: momento('mercadoQuente', 'amigos', 0.5) },
 ];
 const CENTRO = { x: 480, y: 210 };
 
@@ -80,8 +81,8 @@ export const Cena2MercadoQuente: React.FC = () => {
         ))}
       </div>
       <div style={{ display: 'flex', gap: 24, marginTop: 50 }}>
-        <Pilula texto="Sem custo" atraso={5.6} />
-        <Pilula texto="Exige coragem" atraso={7.4} cheia />
+        <Pilula texto="Sem custo" atraso={momento('mercadoQuente', 'semCusto', 0.2)} />
+        <Pilula texto="Exige coragem" atraso={momento('mercadoQuente', 'coragem', 0.2)} cheia />
       </div>
     </Palco>
   );

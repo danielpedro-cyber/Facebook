@@ -1,0 +1,56 @@
+{
+  "_comentario": "Roteiro da narração. Cada frase é sintetizada inteira (entonação natural) e dividida em trechos de legenda. 'fala' (opcional) muda só a pronúncia, não a legenda. Mantenha 'inicio'/'fim' iguais a CENAS em src/constantes.ts.",
+  "cenas": [
+    { "cena": "gancho", "inicio": 0, "fim": 5, "frases": [
+      [{ "id": "gancho", "texto": "Toda carreira em vendas começa do mesmo jeito." }]
+    ]},
+    { "cena": "mercadoQuente", "inicio": 5, "fim": 15, "frases": [
+      [{ "id": "familia", "texto": "Você oferece pra família," },
+       { "id": "amigos", "texto": "pros amigos, pro pessoal do antigo trabalho." }],
+      [{ "id": "semCusto", "texto": "Não custa dinheiro," },
+       { "id": "coragem", "texto": "mas exige coragem." }]
+    ]},
+    { "cena": "baixa", "inicio": 15, "fim": 24, "frases": [
+      [{ "id": "lista", "texto": "Até que a lista acaba." }],
+      [{ "id": "telefone", "texto": "O telefone para de tocar" },
+       { "id": "vendasCaem", "texto": "e as vendas caem." }],
+      [{ "id": "desiste", "texto": "É aqui que a maioria desiste." }]
+    ]},
+    { "cena": "virada", "inicio": 24, "fim": 32, "frases": [
+      [{ "id": "continuar", "texto": "Mas quem quer continuar entende:" },
+       { "id": "daqui", "texto": "daqui pra frente, pra vender," },
+       { "id": "investir", "texto": "é preciso investir." }]
+    ]},
+    { "cena": "canais", "inicio": 32, "fim": 42, "frases": [
+      [{ "id": "bni", "texto": "BNI, network,", "fala": "bê éne i, network," },
+       { "id": "educacao", "texto": "grupos de educação," },
+       { "id": "propaganda", "texto": "propaganda, tráfego pago." }],
+      [{ "id": "gratis", "texto": "Não existe canal de graça." }]
+    ]},
+    { "cena": "gestao", "inicio": 42, "fim": 50, "frases": [
+      [{ "id": "invisto", "texto": "A pergunta é: quanto eu invisto," },
+       { "id": "devolve", "texto": "e quanto isso me devolve?" }],
+      [{ "id": "despesa", "texto": "Porque gastar sem medir é despesa.", "fala": "Porque gastar sem medir, é despesa." }],
+      [{ "id": "investimento", "texto": "E gastar medindo é investimento.", "fala": "E gastar medindo, é investimento." }]
+    ]},
+    { "cena": "escolha", "inicio": 50, "fim": 70, "frases": [
+      [{ "id": "escolha", "texto": "Aí vem a escolha." }],
+      [{ "id": "vendedor", "texto": "O vendedor de alta performance" },
+       { "id": "autonomia", "texto": "tem autonomia, margem," },
+       { "id": "simplicidade", "texto": "simplicidade e retorno rápido:" },
+       { "id": "dele", "texto": "tudo que entra é dele.", "fala": "tudo que entra, é dele." }],
+      [{ "id": "empresario", "texto": "O empresário investe em estrutura e pessoas" },
+       { "id": "escala", "texto": "e ganha escala com o time." }],
+      [{ "id": "melhor", "texto": "Não existe caminho melhor." }],
+      [{ "id": "certo", "texto": "Existe o caminho certo pra você." }]
+    ]},
+    { "cena": "liberdade", "inicio": 70, "fim": 80, "frases": [
+      [{ "id": "liberdade", "texto": "Os dois caminhos te dão liberdade." }],
+      [{ "id": "gestaoFinal", "texto": "Mas ela depende da sua gestão." }]
+    ]},
+    { "cena": "fechamento", "inicio": 80, "fim": 90, "frases": [
+      [{ "id": "pergunta", "texto": "Qual caminho você vai escolher?" }],
+      [{ "id": "comenta", "texto": "Comenta aqui." }]
+    ]}
+  ]
+}

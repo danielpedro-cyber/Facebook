@@ -1,12 +1,16 @@
 import React from 'react';
-import { CORES, FONTE, TEXTOS } from '../constantes';
+import { CORES, FONTE, TEXTOS, momento } from '../constantes';
 import { Palco } from '../componentes/Base';
 import { IconeCalculadora } from '../componentes/Icones';
 import { useCrescer, useEntrada } from '../componentes/animacoes';
 
 // CENA 6 — gestão do investimento (42 a 50 s).
 // Os "números" são perguntas (?) — nada de valores ou promessas de ganho.
-const ATRASOS = [0.3, 1.3, 2.4];
+const ATRASOS = [
+  momento('gestao', 'invisto', 0.5),
+  momento('gestao', 'devolve'),
+  momento('gestao', 'devolve', 0.6),
+];
 
 const Pergunta: React.FC<{ texto: string; atraso: number }> = ({ texto, atraso }) => {
   const linha = useEntrada(atraso, 70);
@@ -88,8 +92,8 @@ export const Cena6Gestao: React.FC = () => {
         <Pergunta key={t} texto={t} atraso={ATRASOS[i]} />
       ))}
       <div style={{ height: 10 }} />
-      <Comparacao rotulo="Gastar sem medir" resultado="despesa" atraso={4.0} />
-      <Comparacao rotulo="Gastar medindo" resultado="investimento" atraso={6.0} destaque />
+      <Comparacao rotulo="Gastar sem medir" resultado="despesa" atraso={momento('gestao', 'despesa', 0.3)} />
+      <Comparacao rotulo="Gastar medindo" resultado="investimento" atraso={momento('gestao', 'investimento', 0.3)} destaque />
     </Palco>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { CORES, FONTE, TEXTOS } from '../constantes';
+import { CORES, FONTE, TEXTOS, momento } from '../constantes';
 import { Palco, Titulo } from '../componentes/Base';
 import { useEntrada, useMola, useProgresso } from '../componentes/animacoes';
 
@@ -7,8 +7,8 @@ import { useEntrada, useMola, useProgresso } from '../componentes/animacoes';
 export const Cena8Liberdade: React.FC = () => {
   const p = useProgresso(0.1, 1.4);
   const palavra = useMola(1.3, 90);
-  const sub = useEntrada(3.9);
-  const sublinhado = useProgresso(4.5, 0.8);
+  const sub = useEntrada(momento('liberdade', 'gestaoFinal'));
+  const sublinhado = useProgresso(momento('liberdade', 'gestaoFinal', 0.6), 0.8);
   const comum = { stroke: CORES.royal, strokeWidth: 14, fill: 'none', strokeLinecap: 'round' as const, pathLength: 1, strokeDasharray: 1, strokeDashoffset: 1 - p };
 
   return (

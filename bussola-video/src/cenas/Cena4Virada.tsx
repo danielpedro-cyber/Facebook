@@ -1,6 +1,6 @@
 import React from 'react';
 import { interpolateColors } from 'remotion';
-import { CORES, TEXTOS } from '../constantes';
+import { CORES, TEXTOS, momento } from '../constantes';
 import { Palco, Titulo } from '../componentes/Base';
 import { IconeLampada } from '../componentes/Icones';
 import { useEntrada, useMola, useProgresso } from '../componentes/animacoes';
@@ -10,8 +10,8 @@ export const Cena4Virada: React.FC = () => {
   const desenho = useProgresso(0.2, 1.4);
   const acende = useProgresso(1.8, 0.6);
   const raios = useMola(2.0);
-  const texto = useEntrada(3.0);
-  const destaque = useMola(5.2);
+  const texto = useEntrada(momento('virada', 'daqui'));
+  const destaque = useMola(momento('virada', 'investir', 0.5));
 
   const preenchimento = interpolateColors(acende, [0, 1], [CORES.fundo, CORES.royalClaro]);
   const corTraco = interpolateColors(acende, [0, 1], [CORES.marinho, CORES.royal]);
