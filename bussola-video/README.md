@@ -38,6 +38,27 @@ npx remotion render Bussola out/bussola.mp4
 
 Na primeira renderização o Remotion baixa um Chrome próprio (~100 MB). Para gerar só um quadro de conferência: `npx remotion still Bussola out/frame.png --frame=1500`.
 
+## Bússola #2 — "3 erros de quem começa"
+
+Segundo episódio da série (60 s), no mesmo estilo e com o mesmo personagem. Fica em `src/ep2/` e é a composição `Bussola2`:
+
+```bash
+npm run render:ep2        # gera out/bussola-2.mp4
+```
+
+- **Roteiro:** `scripts/roteiros/ep2.json` (narração com a voz *Cadu*, que pronuncia "erro" com mais clareza que a *Faber*).
+- **Cenas:** gancho (capa) → promessa ("o terceiro é o mais comum") → erro 1 (depender só da lista de amigos) → erro 2 (investir sem medir) → erro 3 (desistir na primeira baixa) → resumo → fechamento com pedido de envio e "qual desses erros você já cometeu?".
+- **No topo**, no lugar da estrada, um indicador 1–2–3: cada erro aparece com um X vermelho suave e vira ✓ azul quando vem a correção.
+- Textos e tempos em `src/ep2/constantes.ts`; efeitos sonoros em `src/ep2/efeitos.ts`.
+
+Para gerar o áudio de novo:
+
+```bash
+.venv/bin/python scripts/gerar_narracao.py --voz scripts/voz/pt_BR-cadu-medium.onnx --conferir 8 \
+    --roteiro scripts/roteiros/ep2.json --saida public/narracao-ep2.mp3 --legendas src/legendas/ep2.ts
+.venv/bin/python scripts/gerar_trilha.py --roteiro scripts/roteiros/ep2.json --saida public/trilha-ep2.mp3
+```
+
 ## Onde ajustar
 
 Quase tudo fica em **`src/constantes.ts`**:

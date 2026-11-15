@@ -1,6 +1,6 @@
 import React from 'react';
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
-import { CORES, FONTE, LAYOUT, LEGENDAS, s } from '../constantes';
+import { CORES, FONTE, LAYOUT, LEGENDAS as LEGENDAS_PADRAO, s } from '../constantes';
 
 // Legendas grandes, centralizadas e sempre na tela, no estilo "karaokê":
 // a palavra que está sendo falada ganha destaque azul; as próximas ficam esmaecidas.
@@ -18,7 +18,9 @@ const palavrasComTempo = (texto: string, inicio: number, fim: number) => {
   });
 };
 
-export const Legendas: React.FC = () => {
+export const Legendas: React.FC<{ legendas?: { id: string; inicio: number; fim: number; texto: string }[] }> = ({
+  legendas: LEGENDAS = LEGENDAS_PADRAO,
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps;

@@ -8,7 +8,8 @@ import { ENTRA_COMENTA, ENTRA_ENVIO, ENTRA_LOGO } from './cenas/Cena9Fechamento'
 import { ACENDE_LAMPADA } from './cenas/Cena4Virada';
 import { TEM_TOQUE, TOQUE_INICIO } from './cenas/Cena3Baixa';
 
-export type Efeito = { arquivo: string; em: number; volume?: number };
+import type { Efeito } from './componentes/TrilhaSonora';
+export type { Efeito };
 
 const abs = (cena: NomeCena, rel: number) => CENAS[cena].inicio + rel;
 const nomes = Object.keys(CENAS) as NomeCena[];

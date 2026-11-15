@@ -1,0 +1,44 @@
+{
+  "_comentario": "Bússola #2 — 3 erros de quem começa. Cada frase é sintetizada inteira e dividida em trechos de legenda. 'secoes' guia a trilha (scripts/gerar_trilha.py).",
+  "secoes": { "abertura": 4.6, "baixa": [32.2, 39], "virada": 39, "ritmo": 20.4, "escolha": 44.6, "liberdade": [44.6, 52.4], "final": 52.4, "duracao": 60 },
+  "cenas": [
+    { "cena": "gancho", "inicio": 0, "fim": 4.6, "frases": [
+      [{"id": "tres", "texto": "Três erros que fazem o vendedor desistir antes da hora."}]
+    ]},
+    { "cena": "promessa", "inicio": 4.6, "fim": 8.6, "frases": [
+      [{"id": "terceiro", "texto": "O terceiro é o mais comum."}],
+      [{"id": "fica", "texto": "Fica até o final."}]
+    ]},
+    { "cena": "erro1", "inicio": 8.6, "fim": 20.4, "frases": [
+      [{"id": "e1t", "texto": "O primeiro erro:"},
+       {"id": "e1n", "texto": "depender só da lista de amigos."}],
+      [{"id": "e1a", "texto": "A lista acaba rápido,"},
+       {"id": "e1b", "texto": "e quem não prepara o próximo passo fica sem cliente."}],
+      [{"id": "e1f", "texto": "Comece cedo a buscar contatos novos."}]
+    ]},
+    { "cena": "erro2", "inicio": 20.4, "fim": 32.2, "frases": [
+      [{"id": "e2t", "texto": "O segundo erro:"},
+       {"id": "e2n", "texto": "investir sem medir."}],
+      [{"id": "e2a", "texto": "Pagar anúncio, evento ou grupo sem anotar o retorno"},
+       {"id": "e2b", "texto": "é atirar no escuro."}],
+      [{"id": "e2f", "texto": "Anote quanto investiu e quantas vendas cada canal trouxe."}]
+    ]},
+    { "cena": "erro3", "inicio": 32.2, "fim": 44.6, "frases": [
+      [{"id": "e3t", "texto": "O terceiro erro, e o mais comum:"},
+       {"id": "e3n", "texto": "desistir na primeira baixa."}],
+      [{"id": "e3a", "texto": "Toda carreira tem uma fase em que as vendas caem."}],
+      [{"id": "e3f", "texto": "Quem passa por ela entende que a baixa faz parte do caminho."}]
+    ]},
+    { "cena": "resumo", "inicio": 44.6, "fim": 52.4, "frases": [
+      [{"id": "r0", "texto": "Então, recapitulando:"},
+       {"id": "r1", "texto": "busque contatos novos,"},
+       {"id": "r2", "texto": "meça cada investimento"},
+       {"id": "r3", "texto": "e não desista na baixa."}]
+    ]},
+    { "cena": "fechamento", "inicio": 52.4, "fim": 60, "frases": [
+      [{"id": "manda", "texto": "Manda pra alguém que está começando em vendas."}],
+      [{"id": "comenta", "texto": "E comenta:"},
+       {"id": "qual", "texto": "qual desses erros você já cometeu?"}]
+    ]}
+  ]
+}

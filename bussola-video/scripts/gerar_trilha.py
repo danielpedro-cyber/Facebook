@@ -125,7 +125,13 @@ def intensidade(t: float) -> float:
 def carregar_tempos(caminho: str) -> None:
     """Ajusta as seções da música aos tempos das cenas do roteiro."""
     global DURACAO, BAIXA, VIRADA, RITMO, ESCOLHA, LIBERDADE, FINAL, ABERTURA
-    c = {x["cena"]: (x["inicio"], x["fim"]) for x in json.load(open(caminho, encoding="utf-8"))["cenas"]}
+    dados = json.load(open(caminho, encoding="utf-8"))
+    if "secoes" in dados:  # roteiro com seções próprias (ex.: episódio #2)
+        x = dados["secoes"]
+        DURACAO, BAIXA, VIRADA, RITMO = float(x["duracao"]), tuple(x["baixa"]), x["virada"], x["ritmo"]
+        ESCOLHA, LIBERDADE, FINAL, ABERTURA = x["escolha"], tuple(x["liberdade"]), x["final"], x["abertura"]
+        return
+    c = {x["cena"]: (x["inicio"], x["fim"]) for x in dados["cenas"]}
     DURACAO = float(c["fechamento"][1])
     BAIXA = c["baixa"]
     VIRADA = c["virada"][0]
