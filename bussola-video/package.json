@@ -10,7 +10,9 @@
     "render:curta-b": "REMOTION_VERSAO=curta-b remotion render Bussola out/bussola-curta-b.mp4",
     "render:curta-c": "REMOTION_VERSAO=curta-c remotion render Bussola out/bussola-curta-c.mp4",
     "render:ep2": "remotion render Bussola2 out/bussola-2.mp4",
-    "render:todas": "npm run render && npm run render:curta-a && npm run render:curta-b && npm run render:curta-c && npm run render:ep2",
+    "render:ep3": "remotion render Bussola3 out/bussola-3.mp4",
+    "render:ep4": "remotion render Bussola4 out/bussola-4.mp4",
+    "render:todas": "npm run render && npm run render:curta-a && npm run render:curta-b && npm run render:curta-c && npm run render:ep2 && npm run render:ep3 && npm run render:ep4",
     "still": "remotion still Bussola out/frame.png"
   },
   "dependencies": {

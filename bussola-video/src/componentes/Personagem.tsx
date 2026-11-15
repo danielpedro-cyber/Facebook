@@ -77,6 +77,12 @@ type Props = {
   x: number;
   y: number; // posição dos pés (px na tela)
   cabecaBaixa?: boolean;
+  /** Visual: cores e acessórios (para criar outros personagens, ex.: cliente, empresário). */
+  camisa?: string;
+  cabelo?: string;
+  pele?: string;
+  cabeloLongo?: boolean;
+  gravata?: boolean;
 };
 
 export const Personagem: React.FC<Props> = ({
@@ -91,6 +97,11 @@ export const Personagem: React.FC<Props> = ({
   x,
   y,
   cabecaBaixa = false,
+  camisa = CORES.camisa,
+  cabelo = CORES.cabelo,
+  pele = CORES.pele,
+  cabeloLongo = false,
+  gravata = false,
 }) => {
   const frame = useCurrentFrame();
 
@@ -133,9 +144,9 @@ export const Personagem: React.FC<Props> = ({
     const mao = ponta(cot.x, cot.y, ANTEBRACO, m[0] + m[1]);
     return (
       <g>
-        <path d={`M ${dx} ${ombroY} L ${cot.x} ${cot.y}`} stroke={frente ? CORES.camisa : '#2560D8'} strokeWidth={22} strokeLinecap="round" />
-        <path d={`M ${cot.x} ${cot.y} L ${mao.x} ${mao.y}`} stroke={CORES.pele} strokeWidth={18} strokeLinecap="round" />
-        <circle cx={mao.x} cy={mao.y} r={11} fill={CORES.pele} />
+        <path d={`M ${dx} ${ombroY} L ${cot.x} ${cot.y}`} stroke={camisa} strokeWidth={22} strokeLinecap="round" />
+        <path d={`M ${cot.x} ${cot.y} L ${mao.x} ${mao.y}`} stroke={pele} strokeWidth={18} strokeLinecap="round" />
+        <circle cx={mao.x} cy={mao.y} r={11} fill={pele} />
         {frente && objeto === 'celular' && (
           <g transform={`translate(${mao.x} ${mao.y}) rotate(${-(m[0] + m[1]) + 180})`}>
             <rect x={-13} y={-40} width={26} height={44} rx={6} fill={CORES.marinho} />
@@ -173,16 +184,18 @@ export const Personagem: React.FC<Props> = ({
       {perna(ang.pernaTras, -8, '#24365E')}
       {braco(ang.bracoTras, -10, false)}
       {/* tronco */}
-      <rect x={-36} y={quadrilY - TRONCO} width={72} height={TRONCO + 12} rx={30} fill={CORES.camisa} />
+      <rect x={-36} y={quadrilY - TRONCO} width={72} height={TRONCO + 12} rx={30} fill={camisa} />
       <path d={`M -14 ${quadrilY - TRONCO + 2} L 0 ${quadrilY - TRONCO + 20} L 14 ${quadrilY - TRONCO + 2}`} fill="#FFFFFF" opacity={0.9} />
+      {gravata && <path d={`M -7 ${quadrilY - TRONCO + 16} L 7 ${quadrilY - TRONCO + 16} L 10 ${quadrilY - TRONCO + 70} L 0 ${quadrilY - TRONCO + 82} L -10 ${quadrilY - TRONCO + 70} Z`} fill={CORES.marinho} />}
       <rect x={-36} y={quadrilY - 14} width={72} height={20} rx={8} fill={CORES.calca} />
       {perna(ang.pernaFrente, 8, CORES.calca)}
       {/* cabeça */}
       <g transform={`translate(4 ${cabecaY}) rotate(${inclinacao})`}>
-        <rect x={-9} y={22} width={18} height={20} fill={CORES.pele} />
-        <circle r={38} fill={CORES.pele} />
-        <path d="M -38 -2 C -42 -46, 40 -52, 40 -6 C 22 -24, -8 -26, -38 -2 Z" fill={CORES.cabelo} />
-        <circle cx={-36} cy={4} r={7} fill={CORES.pele} />
+        <rect x={-9} y={22} width={18} height={20} fill={pele} />
+        <circle r={38} fill={pele} />
+        {cabeloLongo && <path d="M -40 -6 C -52 30, -44 62, -30 70 L -14 62 C -24 40, -26 10, -20 -6 Z" fill={cabelo} />}
+        <path d="M -38 -2 C -42 -46, 40 -52, 40 -6 C 22 -24, -8 -26, -38 -2 Z" fill={cabelo} />
+        <circle cx={-36} cy={4} r={7} fill={pele} />
         {piscando ? (
           <g stroke={CORES.marinho} strokeWidth={3.5} strokeLinecap="round">
             <path d="M 4 -4 H 14" />

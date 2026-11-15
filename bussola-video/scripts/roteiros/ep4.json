@@ -1,0 +1,39 @@
+{
+  "_comentario": "Bússola #4 — Um dia de cada caminho. Os dois caminhos têm o mesmo peso: a ordem de quem fala primeiro alterna a cada período. 'secoes' guia a trilha.",
+  "secoes": { "abertura": 4.2, "baixa": [0, 0], "virada": 9, "ritmo": 9, "escolha": 37.4, "liberdade": [45.6, 50], "final": 45.6, "duracao": 58 },
+  "cenas": [
+    { "cena": "gancho", "inicio": 0, "fim": 4.2, "frases": [
+      [{"id": "dia", "texto": "Vendedor ou empresário: como é o dia de cada um?"}]
+    ]},
+    { "cena": "promessa", "inicio": 4.2, "fim": 9, "frases": [
+      [{"id": "liberdade", "texto": "Os dois dão liberdade."}],
+      [{"id": "diferente", "texto": "Mas o dia a dia é bem diferente."}]
+    ]},
+    { "cena": "manha", "inicio": 9, "fim": 19, "frases": [
+      [{"id": "m0", "texto": "De manhã,"},
+       {"id": "mV", "texto": "o vendedor de alta performance está na rua, com visitas e ligações."}],
+      [{"id": "mE", "texto": "O empresário reúne o time e define as metas do dia."}]
+    ]},
+    { "cena": "tarde", "inicio": 19, "fim": 28.6, "frases": [
+      [{"id": "t0", "texto": "À tarde,"},
+       {"id": "tE", "texto": "o empresário treina pessoas e acompanha os resultados."}],
+      [{"id": "tV", "texto": "O vendedor apresenta propostas e fecha negócios."}]
+    ]},
+    { "cena": "noite", "inicio": 28.6, "fim": 37.4, "frases": [
+      [{"id": "n0", "texto": "À noite,"},
+       {"id": "nV", "texto": "o vendedor organiza a agenda de amanhã."}],
+      [{"id": "nE", "texto": "O empresário planeja investimentos e crescimento."}]
+    ]},
+    { "cena": "precisa", "inicio": 37.4, "fim": 45.6, "frases": [
+      [{"id": "pV", "texto": "O vendedor precisa de disciplina com a própria agenda."}],
+      [{"id": "pE", "texto": "O empresário precisa de gestão de pessoas e de caixa."}]
+    ]},
+    { "cena": "fechamento", "inicio": 45.6, "fim": 58, "frases": [
+      [{"id": "melhor", "texto": "Não existe caminho melhor."},
+       {"id": "combina", "texto": "Existe o que combina com você."}],
+      [{"id": "manda", "texto": "Manda pra quem está decidindo o próximo passo."}],
+      [{"id": "comenta", "texto": "E comenta:"},
+       {"id": "qual", "texto": "qual desses dias parece mais com o seu?"}]
+    ]}
+  ]
+}

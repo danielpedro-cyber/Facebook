@@ -59,6 +59,17 @@ Para gerar o áudio de novo:
 .venv/bin/python scripts/gerar_trilha.py --roteiro scripts/roteiros/ep2.json --saida public/trilha-ep2.mp3
 ```
 
+## Bússola #3 e #4
+
+| Episódio | Composição | Duração | Tema | Comando |
+|---|---|---|---|---|
+| #3 | `Bussola3` | 59 s | **Do contato à venda**: 5 passos para o cliente não sumir (primeiro contato, entender o objetivo, proposta sob medida, fechamento, pós-venda) | `npm run render:ep3` |
+| #4 | `Bussola4` | 58 s | **Um dia de cada caminho**: manhã, tarde e noite do vendedor de alta performance e do empresário, lado a lado e com o mesmo peso | `npm run render:ep4` |
+
+- Ficam em `src/ep3/` e `src/ep4/` e usam a base comum da série em `src/serie/` (montagem do vídeo, capa, marcadores de progresso, cabeçalhos, cartões e fechamento).
+- No #4 os dois caminhos usam o mesmo componente de coluna, o mesmo personagem (o empresário só ganha gravata) e a ordem de quem é citado primeiro alterna a cada período.
+- Roteiros em `scripts/roteiros/ep3.json` e `ep4.json` (voz *Cadu*). Para gerar o áudio de novo, use os mesmos comandos do #2 trocando `ep2` por `ep3` ou `ep4`.
+
 ## Onde ajustar
 
 Quase tudo fica em **`src/constantes.ts`**:

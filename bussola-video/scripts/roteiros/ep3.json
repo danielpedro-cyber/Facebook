@@ -1,0 +1,39 @@
+{
+  "_comentario": "Bússola #3 — Do contato à venda (5 passos). 'secoes' guia a trilha.",
+  "secoes": { "abertura": 4.2, "baixa": [0, 4.2], "virada": 11.2, "ritmo": 11.2, "escolha": 41.8, "liberdade": [41.8, 49.2], "final": 49.2, "duracao": 59 },
+  "cenas": [
+    { "cena": "gancho", "inicio": 0, "fim": 4.2, "frases": [
+      [{"id": "some", "texto": "Por que o cliente some depois da primeira conversa?"}]
+    ]},
+    { "cena": "promessa", "inicio": 4.2, "fim": 11.2, "frases": [
+      [{"id": "falta", "texto": "Porque falta um caminho."}],
+      [{"id": "cinco", "texto": "São cinco passos. Fica até o final."}]
+    ]},
+    { "cena": "passo1", "inicio": 11.2, "fim": 18.6, "frases": [
+      [{"id": "p1t", "texto": "Passo um: primeiro contato."}],
+      [{"id": "p1f", "texto": "Se apresente e faça uma pergunta antes de oferecer qualquer coisa."}]
+    ]},
+    { "cena": "passo2", "inicio": 18.6, "fim": 27, "frases": [
+      [{"id": "p2t", "texto": "Passo dois: entender o objetivo."}],
+      [{"id": "p2f", "texto": "Descubra o que a pessoa quer conquistar: a casa, o carro, a empresa."}]
+    ]},
+    { "cena": "passo3", "inicio": 27, "fim": 34.6, "frases": [
+      [{"id": "p3t", "texto": "Passo três: a proposta sob medida."}],
+      [{"id": "p3f", "texto": "Mostre o plano que cabe no objetivo dela, sem empurrar."}]
+    ]},
+    { "cena": "passo4", "inicio": 34.6, "fim": 41.8, "frases": [
+      [{"id": "p4t", "texto": "Passo quatro: fechamento."}],
+      [{"id": "p4f", "texto": "Combine o próximo passo com dia e hora marcados."}]
+    ]},
+    { "cena": "passo5", "inicio": 41.8, "fim": 49.2, "frases": [
+      [{"id": "p5t", "texto": "Passo cinco: pós-venda."}],
+      [{"id": "p5f", "texto": "Acompanhe o cliente depois da venda."}],
+      [{"id": "p5i", "texto": "Cliente bem atendido indica."}]
+    ]},
+    { "cena": "fechamento", "inicio": 49.2, "fim": 59, "frases": [
+      [{"id": "manda", "texto": "Manda pra alguém que está começando em vendas."}],
+      [{"id": "comenta", "texto": "E comenta:"},
+       {"id": "qual", "texto": "em qual passo você mais trava?"}]
+    ]}
+  ]
+}
