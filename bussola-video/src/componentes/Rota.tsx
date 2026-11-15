@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { getLength, getPointAtLength } from '@remotion/paths';
 import { CENAS, CORES, FONTE, LAYOUT, PARADAS, VIDEO, s } from '../constantes';
+import { RosaDosVentos } from './Icones';
 
 // Estrada azul que se desenha no topo do vídeo e ganha uma parada numerada
 // a cada cena. Fica fixa durante todo o vídeo (elemento recorrente).
@@ -60,19 +61,19 @@ export const Rota: React.FC = () => {
       style={{ position: 'absolute', top: LAYOUT.rotaTopo, left: 0 }}
     >
       {/* trilho ainda não percorrido */}
-      <path d={CAMINHO} stroke={CORES.trilho} strokeWidth={14} fill="none" strokeLinecap="round" strokeDasharray="2 22" />
+      <path d={CAMINHO} stroke={CORES.trilho} strokeWidth={10} fill="none" strokeLinecap="round" strokeDasharray="2 20" />
       {/* trecho percorrido */}
       <path
         d={CAMINHO}
         stroke={CORES.royal}
-        strokeWidth={14}
+        strokeWidth={10}
         fill="none"
         strokeLinecap="round"
         strokeDasharray={comprimento}
         strokeDashoffset={comprimento * (1 - progresso)}
       />
       {/* ponto de partida */}
-      <circle cx={inicio.x} cy={inicio.y} r={13} fill={CORES.marinho} />
+      <circle cx={inicio.x} cy={inicio.y} r={11} fill={CORES.marinho} />
 
       {pontos.map((pt, i) => {
         const ehChegada = i === PARADAS.length;
@@ -94,20 +95,19 @@ export const Rota: React.FC = () => {
           );
         }
         const ativa = i === atual;
+        const tam = ativa ? 84 : 60;
         return (
           <g key={i} transform={`translate(${pt.x} ${pt.y}) scale(${pop})`}>
-            {ativa && <circle r={40} fill={CORES.royalClaro} />}
-            <circle r={29} fill={ativa ? CORES.marinho : CORES.branco} stroke={CORES.marinho} strokeWidth={5} />
-            <text
-              textAnchor="middle"
-              dominantBaseline="central"
-              fontFamily={FONTE.familia}
-              fontWeight={800}
-              fontSize={30}
-              fill={ativa ? CORES.branco : CORES.marinho}
-            >
-              {i + 1}
-            </text>
+            {ativa && <circle r={50} fill={CORES.royalClaro} />}
+            <g transform={`translate(${-tam / 2} ${-tam / 2})`}>
+              <RosaDosVentos tamanho={tam} />
+            </g>
+            <g transform={`translate(${ativa ? 34 : 26} ${ativa ? 30 : 22})`}>
+              <circle r={17} fill={ativa ? CORES.marinho : CORES.branco} stroke={CORES.marinho} strokeWidth={3} />
+              <text textAnchor="middle" dominantBaseline="central" fontFamily={FONTE.texto} fontWeight={800} fontSize={19} fill={ativa ? CORES.branco : CORES.marinho}>
+                {i + 1}
+              </text>
+            </g>
           </g>
         );
       })}
@@ -137,49 +137,21 @@ export const EtiquetaParada: React.FC = () => {
     <div
       style={{
         position: 'absolute',
-        top: LAYOUT.paradaTopo,
+        top: LAYOUT.paradaTopo + 8,
         left: 0,
         right: 0,
-        display: 'flex',
-        justifyContent: 'center',
+        textAlign: 'center',
+        fontFamily: FONTE.texto,
+        fontWeight: 700,
+        fontSize: 30,
+        letterSpacing: 7,
+        textTransform: 'uppercase',
+        color: vermelho ? CORES.vermelho : CORES.royal,
         opacity: Math.min(entra, sai),
         transform: `translateY(${(1 - entra) * 30}px)`,
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 16,
-          padding: '10px 30px 10px 12px',
-          borderRadius: 999,
-          background: CORES.branco,
-          border: `3px solid ${vermelho ? CORES.vermelho : CORES.marinho}`,
-          fontFamily: FONTE.familia,
-          color: CORES.marinho,
-        }}
-      >
-        <span
-          style={{
-            width: 50,
-            height: 50,
-            borderRadius: 999,
-            background: vermelho ? CORES.vermelho : CORES.marinho,
-            color: CORES.branco,
-            fontWeight: 800,
-            fontSize: 28,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {parada.numero}
-        </span>
-        <span style={{ fontSize: 34, fontWeight: 700, letterSpacing: 0.5 }}>
-          <span style={{ fontWeight: 600, color: CORES.cinza, marginRight: 10 }}>PARADA {parada.numero} ·</span>
-          {parada.titulo}
-        </span>
-      </div>
+      Parada {parada.numero} · {parada.titulo}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { AbsoluteFill, Audio, Sequence, getStaticFiles, interpolate, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { AUDIO, CENAS, CORES, NomeCena, TRANSICAO_CENA, VIDEO, s } from './constantes';
 import { Legendas } from './componentes/Legendas';
+import { Fundo } from './componentes/Base';
 import { EtiquetaParada, Rota } from './componentes/Rota';
 import { Cena1Gancho } from './cenas/Cena1Gancho';
 import { Cena2MercadoQuente } from './cenas/Cena2MercadoQuente';
@@ -72,6 +73,7 @@ export const VideoBussola: React.FC = () => {
   const nomes = Object.keys(CENAS) as NomeCena[];
   return (
     <AbsoluteFill style={{ backgroundColor: CORES.fundo }}>
+      <Fundo />
       {nomes.map((nome, i) => {
         const { inicio, fim } = CENAS[nome];
         const Cena = COMPONENTES[nome];

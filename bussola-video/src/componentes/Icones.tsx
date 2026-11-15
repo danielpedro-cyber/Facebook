@@ -184,3 +184,26 @@ export const IconeBussola: React.FC<{ tamanho?: number }> = ({ tamanho = 120 }) 
     <circle cx="32" cy="32" r="3" fill={CORES.branco} />
   </svg>
 );
+
+/** Rosa dos ventos de 8 pontas, no estilo da bússola do evento. */
+export const RosaDosVentos: React.FC<{ tamanho?: number; cor?: string; corEscura?: string; style?: React.CSSProperties }> = ({
+  tamanho = 80,
+  cor = CORES.royal,
+  corEscura = '#1F4FD0',
+  style,
+}) => (
+  <svg width={tamanho} height={tamanho} viewBox="-50 -50 100 100" style={style}>
+    <g transform="rotate(45)" opacity={0.8}>
+      {[0, 90, 180, 270].map((r) => (
+        <path key={r} d="M0 -30 L6 -6 L0 0 L-6 -6Z" fill="#0B2E7A" transform={`rotate(${r})`} />
+      ))}
+    </g>
+    {[0, 90, 180, 270].map((r) => (
+      <g key={r} transform={`rotate(${r})`}>
+        <path d="M0 -48 L9 -9 L0 0Z" fill={corEscura} />
+        <path d="M0 -48 L-9 -9 L0 0Z" fill={cor} />
+      </g>
+    ))}
+    <circle r={7} fill="#fff" stroke="#0B2E7A" strokeWidth={3} />
+  </svg>
+);

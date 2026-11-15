@@ -20,23 +20,33 @@ export const s = (segundos: number) => Math.round(segundos * VIDEO.fps);
 // Identidade visual
 // -----------------------------------------------------------------------------
 export const CORES = {
-  fundo: '#E8F0FB', // azul bem claro
+  fundo: '#FFFFFF',
+  onda: '#F0F3F8', // ondas suaves do fundo (como nos slides do evento)
   branco: '#FFFFFF',
-  marinho: '#0B2A5B', // cor principal
-  royal: '#1F5FBF', // destaque
-  royalClaro: '#D4E2F7', // preenchimentos suaves
-  trilho: '#C7D7EF', // trecho da rota ainda não percorrido
-  cinza: '#7A8BA6',
-  vermelho: '#D9534F', // vermelho suave — só na cena da baixa
-  vermelhoClaro: '#F6DCDB',
+  marinho: '#0E1F45', // textos e legendas
+  azulProfundo: '#0B2E7A', // azul-marinho do evento
+  royal: '#2B6CF0', // azul elétrico do evento (destaque)
+  royalEscuro: '#1F4FD0',
+  royalClaro: '#E3ECFC', // preenchimentos suaves
+  trilho: '#D5DEEC', // trecho da rota ainda não percorrido
+  cinza: '#5A6A85',
+  vermelho: '#D9534F', // vermelho suave (texto) — só na cena da baixa
+  vermelhoSuave: '#F08A85', // vermelho suave (formas) — só na cena da baixa
+  vermelhoClaro: '#FBE3E2',
+  // personagem
+  pele: '#E9B894',
+  cabelo: '#0E1F45',
+  camisa: '#2B6CF0',
+  calca: '#0E1F45',
 };
 
 export const FONTE = {
-  familia: "'Montserrat Variable', 'Montserrat', 'Inter', sans-serif",
-  titulo: 76, // títulos principais (mínimo 64)
-  tituloMenor: 64,
-  texto: 52,
-  legenda: 54,
+  titulo: "'Urbanist Variable', 'Urbanist', sans-serif", // títulos (como nos slides)
+  texto: "'Inter Variable', 'Inter', sans-serif", // textos e legendas
+  tamTitulo: 84, // títulos principais (mínimo 64)
+  tamTituloMenor: 66,
+  tamTexto: 46,
+  tamLegenda: 52,
 };
 
 // -----------------------------------------------------------------------------
@@ -152,8 +162,8 @@ export const TEXTOS = {
 // -----------------------------------------------------------------------------
 // Logo e áudio (arquivos dentro de /public)
 // -----------------------------------------------------------------------------
-/** Troque por 'logo.png' (ou .svg) depois de colocar o arquivo em /public. */
-export const LOGO_ARQUIVO: string | null = null;
+/** Logo d'A Bússola do Consórcio (em /public). Use null para o placeholder em texto. */
+export const LOGO_ARQUIVO: string | null = 'logo-bussola.png';
 
 export const AUDIO = {
   narracao: 'narracao.mp3',

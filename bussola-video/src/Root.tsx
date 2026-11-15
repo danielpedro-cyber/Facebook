@@ -3,11 +3,17 @@ import { Composition, continueRender, delayRender } from 'remotion';
 import { VIDEO, s } from './constantes';
 import { VideoBussola } from './Video';
 
-/** Garante que a Montserrat esteja carregada antes de capturar os quadros. */
+/** Garante que as fontes estejam carregadas antes de capturar os quadros. */
 const ComFonte: React.FC = () => {
-  const [handle] = useState(() => delayRender('Carregando Montserrat'));
+  const [handle] = useState(() => delayRender('Carregando fontes'));
   useEffect(() => {
-    Promise.all(['600', '700', '800', '900'].map((w) => document.fonts.load(`${w} 64px "Montserrat Variable"`)))
+    const pesos = ['400', '500', '600', '700', '800'];
+    Promise.all(
+      pesos.flatMap((w) => [
+        document.fonts.load(`${w} 64px "Urbanist Variable"`),
+        document.fonts.load(`${w} 64px "Inter Variable"`),
+      ]),
+    )
       .then(() => document.fonts.ready)
       .finally(() => continueRender(handle));
   }, [handle]);

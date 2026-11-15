@@ -2,6 +2,8 @@
 
 Vídeo 9:16 (1080x1920, 30 fps, 90 s) para Reels, TikTok e Shorts, feito com [Remotion](https://www.remotion.dev/) (React).
 
+**Estilo:** institucional claro com a identidade d'A Bússola do Consórcio (logo, azul elétrico, rosa dos ventos como marcador das paradas, títulos em Urbanist e textos em Inter) + um personagem, o consultor, que percorre a estrada e vive a história em cada cena.
+
 ## Como usar
 
 Requisitos: Node.js 18 ou mais novo.
@@ -40,16 +42,13 @@ Quase tudo fica em **`src/constantes.ts`**:
 | Volumes de narração e trilha | `AUDIO` |
 | Faixas da tela (rota, conteúdo, legendas) | `LAYOUT`, `AREA_SEGURA` |
 
-Cada cena é um componente em `src/cenas/` (`Cena1Gancho.tsx` … `Cena9Fechamento.tsx`). Os elementos que aparecem o vídeo todo ficam em `src/componentes/`: `Rota.tsx` (estrada com paradas), `Legendas.tsx`, `Base.tsx` (palco, títulos e logo), `Icones.tsx` (ícones de linha em SVG) e `animacoes.ts` (entradas com spring).
+Cada cena é um componente em `src/cenas/` (`Cena1Gancho.tsx` … `Cena9Fechamento.tsx`). Os elementos que aparecem o vídeo todo ficam em `src/componentes/`: `Personagem.tsx` (o consultor, com poses como andando, sentado, com celular, apontando, comemorando e acenando), `Rota.tsx` (estrada com paradas), `Legendas.tsx`, `Base.tsx` (fundo, palco, títulos, logo e estrada), `Icones.tsx` (ícones de linha e rosa dos ventos) e `animacoes.ts` (entradas com spring).
 
 Os tempos de animação dentro de cada cena são relativos ao início da cena. Se mudar a duração de uma cena em `CENAS`, revise esses atrasos no arquivo da cena.
 
-## Trocar a logo
+## Logo
 
-1. Coloque o arquivo em `public/` (ex.: `public/logo.png` ou `.svg`).
-2. Em `src/constantes.ts`, mude `LOGO_ARQUIVO` para `'logo.png'`.
-
-Enquanto for `null`, aparece o placeholder em texto "Bússola".
+A logo d'A Bússola do Consórcio está em `public/logo-bussola.png` (recortada da apresentação de patrocínio). Para trocar por um arquivo de melhor qualidade, substitua esse arquivo ou mude `LOGO_ARQUIVO` em `src/constantes.ts`.
 
 ## Áudio
 
@@ -86,8 +85,8 @@ Substitua `public/narracao.mp3` pela gravação e ajuste `inicio` e `fim` de cad
 ## Regras de layout seguidas
 
 - Nada importante nos 250 px de cima e de baixo (margens do Reels).
-- Títulos com 64 px ou mais; legendas com 54 px, sempre na tela.
-- Na cena 7 os dois cartões usam o mesmo componente: mesmo tamanho, cor, borda e tempo de entrada. Os itens aparecem em pares, e um sinal de "=" surge entre os caminhos.
+- Títulos com 64 px ou mais; legendas com 52 px, sempre na tela.
+- Na cena 7 as duas colunas usam o mesmo componente: mesmo tamanho, cor e tempo de entrada, e os itens aparecem em pares. O personagem fica no meio da bifurcação, sem pender para nenhum lado.
 - Nenhum número de resultado ou promessa de ganho: na cena 6 os "números" são perguntas.
 
-Fonte Montserrat (licença SIL OFL), empacotada via `@fontsource-variable/montserrat`; não precisa de internet para renderizar.
+Fontes Urbanist e Inter (licença SIL OFL), empacotadas via `@fontsource-variable`; não precisa de internet para renderizar.

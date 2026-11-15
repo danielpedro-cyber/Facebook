@@ -1,89 +1,64 @@
 import React from 'react';
-import { CORES, TEXTOS, momento } from '../constantes';
-import { Palco, SeloIcone } from '../componentes/Base';
-import { IconeCheck, IconeEmpresa, IconeVendedor } from '../componentes/Icones';
-import { useCrescer, useEntrada, useProgresso } from '../componentes/animacoes';
+import { CORES, FONTE, TEXTOS, momento } from '../constantes';
+import { Cenario, Estrada, Palco } from '../componentes/Base';
+import { IconeCheck } from '../componentes/Icones';
+import { Personagem, useTrocaPose } from '../componentes/Personagem';
+import { useEntrada, useProgresso } from '../componentes/animacoes';
 
-// CENA 7 — a escolha (50 a 70 s).
-// Os dois cartões usam o MESMO componente, mesmas cores, tamanhos e tempos:
-// nenhum caminho pode parecer superior. Os itens aparecem em pares (linha a linha).
-const LARGURA_CARTAO = 466;
-// Os 5 pares de itens se distribuem enquanto a narração descreve os dois caminhos.
+// CENA 7 — a escolha (50 a 70 s): o consultor chega à bifurcação.
+// As duas colunas usam o MESMO componente, mesmas cores, tamanhos e tempos:
+// nenhum caminho pode parecer superior. Os itens aparecem em pares.
 const ITENS_INICIO = momento('escolha', 'vendedor');
 const ITENS_PASSO = (momento('escolha', 'escala', 1) - ITENS_INICIO) / 5;
-
-const Bifurcacao: React.FC = () => {
-  const p = useProgresso(0.3, 1.3);
-  const igual = useCrescer(momento('escolha', 'melhor'));
-  const esq = LARGURA_CARTAO / 2;
-  const dir = 960 - LARGURA_CARTAO / 2;
-  const comum = { stroke: CORES.royal, strokeWidth: 14, fill: 'none', strokeLinecap: 'round' as const, pathLength: 1, strokeDasharray: 1, strokeDashoffset: 1 - p };
-  return (
-    <div style={{ position: 'relative', width: 960, height: 92, flexShrink: 0 }}>
-      <svg width={960} height={92} style={{ position: 'absolute', inset: 0 }}>
-        <path d={`M 480 0 V 22 C 480 58, ${esq} 40, ${esq} 88`} {...comum} />
-        <path d={`M 480 0 V 22 C 480 58, ${dir} 40, ${dir} 88`} {...comum} />
-      </svg>
-      {/* "=" entre os caminhos quando a narração diz "não existe caminho melhor" */}
-      <div style={{ position: 'absolute', left: 480 - 38, top: 26, ...igual }}>
-        <SeloIcone tamanho={76} fundo={CORES.marinho}>
-          <span style={{ color: CORES.branco, fontSize: 54, fontWeight: 800, lineHeight: 1, marginTop: -4 }}>=</span>
-        </SeloIcone>
-      </div>
-    </div>
-  );
-};
+const CALMO = momento('escolha', 'melhor');
 
 const Item: React.FC<{ texto: string; atraso: number }> = ({ texto, atraso }) => (
-  <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', ...useEntrada(atraso, 40) }}>
-    <IconeCheck tamanho={40} cor={CORES.royal} espessura={6} style={{ flexShrink: 0, marginTop: 1 }} />
-    <span style={{ fontSize: 33, fontWeight: 600, lineHeight: 1.2 }}>{texto}</span>
+  <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start', ...useEntrada(atraso, 40) }}>
+    <IconeCheck tamanho={36} cor={CORES.royal} espessura={6} style={{ flexShrink: 0, marginTop: 1 }} />
+    <span style={{ fontSize: 30, fontWeight: 500, lineHeight: 1.22, color: CORES.marinho }}>{texto}</span>
   </div>
 );
 
-const CartaoCaminho: React.FC<{ titulo: string; itens: string[]; Icone: typeof IconeVendedor }> = ({
-  titulo,
-  itens,
-  Icone,
-}) => {
-  const entrada = useEntrada(1.0, 80);
-  return (
+const Coluna: React.FC<{ titulo: string; itens: string[] }> = ({ titulo, itens }) => (
+  <div style={{ width: 450, display: 'flex', flexDirection: 'column', gap: 12, ...useEntrada(1.0, 60) }}>
     <div
       style={{
-        width: LARGURA_CARTAO,
-        height: '100%',
-        background: CORES.branco,
-        border: `4px solid ${CORES.marinho}`,
-        borderRadius: 28,
-        padding: '22px 22px',
+        fontFamily: FONTE.titulo,
+        fontWeight: 700,
+        fontSize: 42,
+        lineHeight: 1.04,
+        height: 100,
         display: 'flex',
-        flexDirection: 'column',
-        gap: 12,
-        ...entrada,
+        alignItems: 'flex-end',
+        paddingBottom: 12,
+        borderBottom: `4px solid ${CORES.royal}`,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14, height: 112, flexShrink: 0 }}>
-        <SeloIcone tamanho={84}>
-          <Icone tamanho={58} cor={CORES.marinho} espessura={3.6} />
-        </SeloIcone>
-        <span style={{ fontSize: 33, fontWeight: 800, lineHeight: 1.12, textTransform: 'uppercase' }}>{titulo}</span>
-      </div>
-      <div style={{ height: 4, background: CORES.royalClaro, borderRadius: 4 }} />
-      {itens.map((t, i) => (
-        <Item key={t} texto={t} atraso={ITENS_INICIO + i * ITENS_PASSO} />
-      ))}
+      {titulo}
     </div>
-  );
-};
+    {itens.map((t, i) => (
+      <Item key={t} texto={t} atraso={ITENS_INICIO + i * ITENS_PASSO} />
+    ))}
+  </div>
+);
 
 export const Cena7Escolha: React.FC = () => {
+  const estrada = useProgresso(0.1, 1.0);
+  const calmo = useTrocaPose(CALMO, 0.5);
   const { vendedor, empresario } = TEXTOS.caminhos;
+  const ramo = (lado: number) => `M 480 300 L 480 210 C 480 130, ${480 + lado * 250} 140, ${480 + lado * 255} 30`;
   return (
-    <Palco style={{ justifyContent: 'flex-start', top: 528, height: 850 }}>
-      <Bifurcacao />
-      <div style={{ display: 'flex', gap: 28, height: 752, marginTop: 4 }}>
-        <CartaoCaminho titulo={vendedor.titulo} itens={vendedor.itens} Icone={IconeVendedor} />
-        <CartaoCaminho titulo={empresario.titulo} itens={empresario.itens} Icone={IconeEmpresa} />
+    <Palco style={{ justifyContent: 'flex-start' }}>
+      <Cenario altura={300} style={{ position: 'absolute', top: 0, left: 0, opacity: estrada }}>
+        <g style={{ clipPath: `inset(${(1 - estrada) * 100}% 0 0 0)` }}>
+          <Estrada y={0} d={ramo(-1)} largura={70} />
+          <Estrada y={0} d={ramo(1)} largura={70} />
+        </g>
+        <Personagem pose={calmo > 0 ? 'parado' : 'pensando'} dePose="pensando" transicao={calmo} expressao={calmo > 0.5 ? 'feliz' : 'neutro'} x={480} y={292} escala={0.78} />
+      </Cenario>
+      <div style={{ position: 'absolute', top: 300, left: 0, right: 0, display: 'flex', justifyContent: 'space-between' }}>
+        <Coluna titulo={vendedor.titulo} itens={vendedor.itens} />
+        <Coluna titulo={empresario.titulo} itens={empresario.itens} />
       </div>
     </Palco>
   );

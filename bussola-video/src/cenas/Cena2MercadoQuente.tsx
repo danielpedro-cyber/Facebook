@@ -1,56 +1,54 @@
 import React from 'react';
 import { CORES, FONTE, momento } from '../constantes';
-import { Palco, SeloIcone } from '../componentes/Base';
-import { IconeAmigos, IconeCelular, IconeFamilia, IconeMaleta } from '../componentes/Icones';
+import { Cenario, Palco, SeloIcone } from '../componentes/Base';
+import { IconeAmigos, IconeFamilia, IconeMaleta } from '../componentes/Icones';
+import { Personagem } from '../componentes/Personagem';
 import { useCrescer, useEntrada, useProgresso } from '../componentes/animacoes';
 
-// CENA 2 — mercado quente (5 a 15 s). Tempos relativos ao início da cena,
-// presos à narração com momento().
+// CENA 2 — mercado quente (5 a 15 s): o consultor liga para a família, amigos e ex-colegas.
 const CONTATOS = [
-  { rotulo: 'Família', Icone: IconeFamilia, x: 160, y: 120, atraso: momento('mercadoQuente', 'familia', 0.55) },
-  { rotulo: 'Amigos', Icone: IconeAmigos, x: 800, y: 120, atraso: momento('mercadoQuente', 'amigos', 0.05) },
-  { rotulo: 'Ex-trabalho', Icone: IconeMaleta, x: 480, y: 440, atraso: momento('mercadoQuente', 'amigos', 0.5) },
+  { rotulo: 'Família', Icone: IconeFamilia, x: 150, y: 150, atraso: momento('mercadoQuente', 'familia', 0.55) },
+  { rotulo: 'Amigos', Icone: IconeAmigos, x: 810, y: 150, atraso: momento('mercadoQuente', 'amigos', 0.05) },
+  { rotulo: 'Ex-trabalho', Icone: IconeMaleta, x: 810, y: 420, atraso: momento('mercadoQuente', 'amigos', 0.5) },
 ];
-const CENTRO = { x: 480, y: 210 };
+const MAO = { x: 545, y: 330 }; // posição aproximada do celular
 
-const Contato: React.FC<(typeof CONTATOS)[number]> = ({ rotulo, Icone, x, y, atraso }) => {
-  const estilo = useCrescer(atraso);
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        left: x - 160,
-        top: y - 85,
-        width: 320,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 10,
-        ...estilo,
-      }}
-    >
-      <SeloIcone tamanho={150} fundo={CORES.branco} style={{ border: `4px solid ${CORES.marinho}` }}>
-        <Icone tamanho={92} />
-      </SeloIcone>
-      <span style={{ fontSize: 44, fontWeight: 700, whiteSpace: 'nowrap' }}>{rotulo}</span>
-    </div>
-  );
-};
+const Contato: React.FC<(typeof CONTATOS)[number]> = ({ rotulo, Icone, x, y, atraso }) => (
+  <div
+    style={{
+      position: 'absolute',
+      left: x - 150,
+      top: y - 75,
+      width: 300,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 8,
+      ...useCrescer(atraso),
+    }}
+  >
+    <SeloIcone tamanho={140} fundo={CORES.branco} style={{ border: `5px solid ${CORES.royal}` }}>
+      <Icone tamanho={86} cor={CORES.azulProfundo} />
+    </SeloIcone>
+    <span style={{ fontFamily: FONTE.titulo, fontSize: 44, fontWeight: 700, whiteSpace: 'nowrap' }}>{rotulo}</span>
+  </div>
+);
 
 const Ligacao: React.FC<{ x: number; y: number; atraso: number }> = ({ x, y, atraso }) => {
-  const p = useProgresso(atraso - 0.2, 0.6);
-  const x2 = CENTRO.x + (x - CENTRO.x) * p;
-  const y2 = CENTRO.y + (y - CENTRO.y) * p;
-  return <line x1={CENTRO.x} y1={CENTRO.y} x2={x2} y2={y2} stroke={CORES.royal} strokeWidth={6} strokeDasharray="4 16" strokeLinecap="round" />;
+  const p = useProgresso(atraso - 0.25, 0.5);
+  return (
+    <line x1={MAO.x} y1={MAO.y} x2={MAO.x + (x - MAO.x) * p} y2={MAO.y + (y - MAO.y) * p} stroke={CORES.royal} strokeWidth={6} strokeDasharray="3 16" strokeLinecap="round" />
+  );
 };
 
 const Pilula: React.FC<{ texto: string; atraso: number; cheia?: boolean }> = ({ texto, atraso, cheia }) => (
   <div
     style={{
-      padding: '18px 34px',
+      padding: '18px 36px',
       borderRadius: 999,
-      fontSize: FONTE.texto - 4,
-      fontWeight: 800,
+      fontFamily: FONTE.titulo,
+      fontSize: 50,
+      fontWeight: 700,
       background: cheia ? CORES.marinho : CORES.branco,
       color: cheia ? CORES.branco : CORES.marinho,
       border: `4px solid ${CORES.marinho}`,
@@ -62,25 +60,23 @@ const Pilula: React.FC<{ texto: string; atraso: number; cheia?: boolean }> = ({ 
 );
 
 export const Cena2MercadoQuente: React.FC = () => {
-  const celular = useCrescer(0.1);
+  const entra = useCrescer(0.1);
   return (
     <Palco style={{ justifyContent: 'flex-start' }}>
-      <div style={{ position: 'relative', width: 960, height: 590 }}>
-        <svg width={960} height={590} style={{ position: 'absolute', inset: 0 }}>
+      <div style={{ position: 'relative', width: 960, height: 640 }}>
+        <Cenario altura={640} style={{ position: 'absolute', inset: 0 }}>
           {CONTATOS.map((c) => (
             <Ligacao key={c.rotulo} x={c.x} y={c.y} atraso={c.atraso} />
           ))}
-        </svg>
-        <div style={{ position: 'absolute', left: CENTRO.x - 110, top: CENTRO.y - 140, ...celular }}>
-          <SeloIcone tamanho={220} fundo={CORES.royalClaro}>
-            <IconeCelular tamanho={170} espessura={3} />
-          </SeloIcone>
-        </div>
+          <g style={{ opacity: entra.opacity as number }}>
+            <Personagem pose="celular" objeto="celular" expressao="feliz" x={470} y={610} escala={1.05} />
+          </g>
+        </Cenario>
         {CONTATOS.map((c) => (
           <Contato key={c.rotulo} {...c} />
         ))}
       </div>
-      <div style={{ display: 'flex', gap: 24, marginTop: 50 }}>
+      <div style={{ display: 'flex', gap: 24, marginTop: 30 }}>
         <Pilula texto="Sem custo" atraso={momento('mercadoQuente', 'semCusto', 0.2)} />
         <Pilula texto="Exige coragem" atraso={momento('mercadoQuente', 'coragem', 0.2)} cheia />
       </div>
