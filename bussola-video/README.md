@@ -76,7 +76,7 @@ npm run render
 
 - Em `roteiro.json`, `texto` é a legenda e `fala` (opcional) muda só a pronúncia. Por exemplo, "BNI" é falado como "bê éne i".
 - `--conferir 8` gera 8 versões de cada frase e escolhe a mais clara, conferindo com reconhecimento de fala (Whisper). Sem essa opção, o script não precisa do `faster-whisper`.
-- Se uma cena não couber no tempo, a fala dela é acelerada um pouco. Hoje só a cena 6 é acelerada, cerca de 9%.
+- Se uma cena não couber no tempo, a fala dela é acelerada um pouco. Hoje só a cena 6 é acelerada, cerca de 10%.
 
 ### Usar uma gravação de voz real
 

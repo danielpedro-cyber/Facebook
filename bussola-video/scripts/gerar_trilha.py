@@ -29,10 +29,11 @@ BATIDA = 60 / BPM  # 0,5 s
 COMPASSO = 4 * BATIDA  # 2 s
 
 # Cenas (s) — iguais a CENAS em src/constantes.ts
-BAIXA = (15, 24)
-VIRADA = 24
-RITMO = 32  # entra percussão leve
-LIBERDADE = (70, 80)
+BAIXA = (18, 27)
+VIRADA = 27
+RITMO = 35  # entra percussão leve
+ESCOLHA = 53
+LIBERDADE = (73, 80)
 FINAL = 80
 
 # Progressões (notas MIDI). Normal: C – G – Am – F. Baixa: Am – F – Dm – E(sus)
@@ -102,7 +103,7 @@ def adiciona(buf: np.ndarray, sinal: np.ndarray, inicio: float, ganho: float, pa
 
 def intensidade(t: float) -> float:
     """Curva de energia da música ao longo do vídeo (0–1)."""
-    if t < 5:
+    if t < 8:
         return 0.55
     if t < BAIXA[0]:
         return 0.7
@@ -110,7 +111,7 @@ def intensidade(t: float) -> float:
         return 0.45
     if t < RITMO:
         return 0.75
-    if t < 50:
+    if t < ESCOLHA:
         return 0.85
     if t < LIBERDADE[0]:
         return 0.9
@@ -142,7 +143,7 @@ def main() -> int:
             adiciona(pad, s * env_adsr(len(s), 0.5, 0.6), t0, 0.05)
 
         # baixo
-        if t0 >= 5:
+        if t0 >= 8:
             s = tom(hz(baixo), COMPASSO, (1.0, 0.25))
             s *= np.exp(-np.arange(len(s)) / SR / 1.2) * env_adsr(len(s), 0.01, 0.1)
             adiciona(graves, s, t0, 0.16 * e)
@@ -150,7 +151,7 @@ def main() -> int:
         # arpejo (piano elétrico suave) — some na baixa, volta na virada
         if not triste:
             for k, idx in enumerate(padrao_arpejo):
-                if t0 < 5 and k % 2:  # abertura mais espaçada
+                if t0 < 8 and k % 2:  # abertura mais espaçada
                     continue
                 oitava = 12 if (c % 2 and k >= 4 and t0 >= VIRADA) else 0
                 adiciona(arpejo, pluck(hz(notas[idx] + oitava)), t0 + k * BATIDA / 2, 0.11 * e, pan=-0.35 if k % 2 else 0.35)
@@ -166,7 +167,7 @@ def main() -> int:
                 adiciona(perc, chimbal(rng), t0 + b * BATIDA + BATIDA / 2, 0.045 * e, pan=0.3)
 
         # pequena melodia de sinos na escolha e na liberdade
-        if 50 <= t0 < FINAL:
+        if ESCOLHA <= t0 < FINAL:
             frase = [notas[3] + 12, notas[2] + 12] if c % 2 == 0 else [notas[1] + 12, notas[3] + 12]
             for k, nota in enumerate(frase):
                 adiciona(melodia, sino(hz(nota)), t0 + k * BATIDA * 1.5, 0.055 if t0 < LIBERDADE[0] else 0.075, pan=0.15)

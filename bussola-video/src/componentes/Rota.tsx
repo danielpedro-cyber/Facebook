@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { getLength, getPointAtLength } from '@remotion/paths';
-import { CENAS, CORES, FONTE, LAYOUT, PARADAS, VIDEO, s } from '../constantes';
+import { CENAS, CORES, FONTE, LAYOUT, PARADAS, VIDEO, momento, s } from '../constantes';
 import { RosaDosVentos } from './Icones';
 
 // Estrada azul que se desenha no topo do vídeo e ganha uma parada numerada
@@ -111,6 +111,27 @@ export const Rota: React.FC = () => {
           </g>
         );
       })}
+
+      {/* prévia no gancho: "?" pulsando no ponto onde a maioria desiste (parada 2) */}
+      {(() => {
+        const ini = momento('gancho', 'mesmoPonto') + CENAS.gancho.inicio;
+        const fim = CENAS.gancho.fim;
+        const t = frame / fps;
+        if (t < ini || t > fim) return null;
+        const entra = spring({ frame: frame - s(ini), fps, config: { damping: 12, stiffness: 150 } });
+        const sai = interpolate(t, [fim - 0.4, fim], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+        const pulso = 1 + 0.08 * Math.sin(frame * 0.25);
+        const pt = pontos[1];
+        return (
+          <g transform={`translate(${pt.x} ${pt.y}) scale(${entra * pulso})`} opacity={sai}>
+            <circle r={44} fill={CORES.royalClaro} />
+            <circle r={30} fill={CORES.marinho} />
+            <text textAnchor="middle" dominantBaseline="central" fontFamily={FONTE.titulo} fontWeight={800} fontSize={40} fill={CORES.branco}>
+              ?
+            </text>
+          </g>
+        );
+      })()}
 
       {/* "veículo": ponta da linha enquanto ela avança */}
       {progresso > 0.001 && progresso < 0.999 && (

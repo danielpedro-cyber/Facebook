@@ -74,14 +74,14 @@ export const LAYOUT = {
 // Cenas (início e fim em segundos)
 // -----------------------------------------------------------------------------
 export const CENAS = {
-  gancho: { inicio: 0, fim: 5 },
-  mercadoQuente: { inicio: 5, fim: 15 },
-  baixa: { inicio: 15, fim: 24 },
-  virada: { inicio: 24, fim: 32 },
-  canais: { inicio: 32, fim: 42 },
-  gestao: { inicio: 42, fim: 50 },
-  escolha: { inicio: 50, fim: 70 },
-  liberdade: { inicio: 70, fim: 80 },
+  gancho: { inicio: 0, fim: 8 },
+  mercadoQuente: { inicio: 8, fim: 18 },
+  baixa: { inicio: 18, fim: 27 },
+  virada: { inicio: 27, fim: 35 },
+  canais: { inicio: 35, fim: 45 },
+  gestao: { inicio: 45, fim: 53 },
+  escolha: { inicio: 53, fim: 73 },
+  liberdade: { inicio: 73, fim: 80 },
   fechamento: { inicio: 80, fim: 90 },
 } as const;
 
@@ -125,7 +125,11 @@ export const momento = (cena: NomeCena, id: string, fracao = 0): number => {
 // Conteúdo das cenas
 // -----------------------------------------------------------------------------
 export const TEXTOS = {
-  gancho: 'Toda carreira em vendas começa do mesmo jeito...',
+  gancho: {
+    pergunta: 'Você sabia que a maioria dos vendedores desiste no mesmo ponto da carreira?',
+    destaque: 'desiste no mesmo ponto', // trecho da pergunta em destaque
+    resposta: 'E tudo começa do mesmo jeito...',
+  },
   virada: { antes: 'Pra continuar vendendo, é preciso ', destaque: 'investir.' },
   canais: ['BNI e network', 'Educação e eventos', 'Propaganda e conteúdo', 'Tráfego pago'],
   gestao: ['Quanto invisto?', 'Quantas vendas gera?', 'Quanto ganho por venda?'],
