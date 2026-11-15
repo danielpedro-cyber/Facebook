@@ -160,6 +160,7 @@ Facebook/
 ├── lead_suggestions.py      # Ranking e gerador de sugestões de leads
 ├── paid_traffic_metrics.py  # Benchmarks e avaliação de métricas
 ├── video_editor.py          # Editor de vídeo (slideshow) via FFmpeg
+├── bussola-video/           # Vídeo 9:16 da Bússola em Remotion (ver README da pasta)
 ├── requirements.txt         # Dependências Python
 ├── .env.example             # Modelo de configuração
 └── .env                     # Suas credenciais (não commitado)
